@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="reportxparams8"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="552"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isFloatColumnFooter="true"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="true">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="sede" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="servicio" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rubro" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipoproductor" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rangohas" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_inicio" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["1900-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_fin" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["2009-12-31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="encabezado" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="encabezado2" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pie" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="eje" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="sitio" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT	seq_ideje, str_descripcioneje, id_servicio, servicio,id_categoria, categoria, 
+	id_rubro, rubro,id_sede, sede, id_tipoproductor, tipo_productor as productor, 
+	id_rangohas, rango_hectareas as rango, 
+	id_periodo, observacion_periodo as periodo, 
+	sum(dbl_hasfisicas) as has_fisicas, 
+	sum(dbl_haslabor) as has_labor, 
+	sum(int_prodatendidos) as nro_atendidos
+FROM	 viw_labores_ampliadas
+WHERE 	(id_categoria IN (3)) 
+	AND CAST(seq_ideje AS CHAR) LIKE $P{eje}
+	AND CAST(id_sede AS VARCHAR) LIKE $P{sede}		
+	AND CAST(id_servicio AS VARCHAR) LIKE $P{servicio}
+	AND CAST(id_rubro AS VARCHAR) LIKE $P{rubro}
+	AND CAST(id_tipoproductor AS VARCHAR) LIKE $P{tipoproductor}
+	AND CAST(id_rangohas AS VARCHAR) LIKE $P{rangohas}
+	AND CAST(codsit AS VARCHAR) LIKE $P{sitio}
+	AND (dtm_fecha BETWEEN $P{fecha_inicio}::date AND $P{fecha_fin}::date)
+GROUP BY	id_periodo, observacion_periodo,
+		id_categoria,categoria,
+		id_sede, sede,
+		id_servicio, servicio,
+		id_rubro,rubro,
+		id_tipoproductor, tipo_productor,
+		id_rangohas, rango_hectareas,
+		id_rangohas, rango_hectareas,seq_ideje, 
+		str_descripcioneje
+ORDER BY	id_periodo, observacion_periodo,
+		id_categoria,categoria,
+		id_sede, sede,
+		id_servicio, servicio,
+		id_rubro,rubro,
+		id_tipoproductor, tipo_productor,
+		id_rangohas, rango_hectareas]]></queryString>
+
+	<field name="seq_ideje" class="java.lang.Integer"/>
+	<field name="str_descripcioneje" class="java.lang.String"/>
+	<field name="id_servicio" class="java.lang.Integer"/>
+	<field name="servicio" class="java.lang.String"/>
+	<field name="id_categoria" class="java.lang.Integer"/>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="id_rubro" class="java.lang.Integer"/>
+	<field name="rubro" class="java.lang.String"/>
+	<field name="id_sede" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="id_tipoproductor" class="java.lang.Integer"/>
+	<field name="productor" class="java.lang.String"/>
+	<field name="id_rangohas" class="java.lang.Integer"/>
+	<field name="rango" class="java.lang.String"/>
+	<field name="id_periodo" class="java.lang.Integer"/>
+	<field name="periodo" class="java.lang.String"/>
+	<field name="has_fisicas" class="java.lang.Double"/>
+	<field name="has_labor" class="java.lang.Double"/>
+	<field name="nro_atendidos" class="java.lang.Long"/>
+
+	<variable name="sumaxrubro_hasFisicas" class="java.lang.Double" resetType="Group" resetGroup="Rubro" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_fisicas}]]></variableExpression>
+	</variable>
+	<variable name="sumaxrubro_hasLabor" class="java.lang.Double" resetType="Group" resetGroup="Rubro" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_labor}]]></variableExpression>
+	</variable>
+	<variable name="sumaxrubro_atendidos" class="java.lang.Long" resetType="Group" resetGroup="Rubro" calculation="Sum">
+		<variableExpression><![CDATA[$F{nro_atendidos}]]></variableExpression>
+	</variable>
+	<variable name="sumaxserv_hasFisicas" class="java.lang.Double" resetType="Group" resetGroup="Servicios" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_fisicas}]]></variableExpression>
+	</variable>
+	<variable name="sumaxserv_hasLabor" class="java.lang.Double" resetType="Group" resetGroup="Servicios" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_labor}]]></variableExpression>
+	</variable>
+	<variable name="sumaxserv_atendidos" class="java.lang.Long" resetType="Group" resetGroup="Servicios" calculation="Sum">
+		<variableExpression><![CDATA[$F{nro_atendidos}]]></variableExpression>
+	</variable>
+	<variable name="sumaxsede_hasFisicas" class="java.lang.Double" resetType="Group" resetGroup="Sede" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_fisicas}]]></variableExpression>
+	</variable>
+	<variable name="sumaxsede_hasLabor" class="java.lang.Double" resetType="Group" resetGroup="Sede" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_labor}]]></variableExpression>
+	</variable>
+	<variable name="sumaxsede_atendidos" class="java.lang.Long" resetType="Group" resetGroup="Sede" calculation="Sum">
+		<variableExpression><![CDATA[$F{nro_atendidos}]]></variableExpression>
+	</variable>
+	<variable name="sumaxcat_hasFisicas" class="java.lang.Double" resetType="Group" resetGroup="Categorias" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_fisicas}]]></variableExpression>
+	</variable>
+	<variable name="sumaxcat_hasLabor" class="java.lang.Double" resetType="Group" resetGroup="Categorias" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_labor}]]></variableExpression>
+	</variable>
+	<variable name="sumaxcat_atendidos" class="java.lang.Long" resetType="Group" resetGroup="Categorias" calculation="Sum">
+		<variableExpression><![CDATA[$F{nro_atendidos}]]></variableExpression>
+	</variable>
+	<variable name="sumaxper_hasFisicas" class="java.lang.Double" resetType="Group" resetGroup="Periodos" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_fisicas}]]></variableExpression>
+	</variable>
+	<variable name="sumaxper_hasLabor" class="java.lang.Double" resetType="Group" resetGroup="Periodos" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_labor}]]></variableExpression>
+	</variable>
+	<variable name="sumaxper_atendidos" class="java.lang.Long" resetType="Group" resetGroup="Periodos" calculation="Sum">
+		<variableExpression><![CDATA[$F{nro_atendidos}]]></variableExpression>
+	</variable>
+	<variable name="total_hasFisicas" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_fisicas}]]></variableExpression>
+	</variable>
+	<variable name="total_hasLabor" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{has_labor}]]></variableExpression>
+	</variable>
+	<variable name="total_atendidos" class="java.lang.Long" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{nro_atendidos}]]></variableExpression>
+	</variable>
+
+		<group  name="General" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="22"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="414"
+						y="0"
+						width="47"
+						height="22"
+						forecolor="#16F318"
+						key="textField-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{total_hasFisicas}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="0"
+						width="48"
+						height="22"
+						forecolor="#16F318"
+						key="textField-2"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{total_hasLabor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="509"
+						y="0"
+						width="43"
+						height="22"
+						forecolor="#16F318"
+						key="textField-3"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{total_atendidos}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="132"
+						y="0"
+						width="282"
+						height="22"
+						key="staticText-29"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[::::::::::::::::.. TOTAL GENERAL ..::::::::::::::::]]></text>
+				</staticText>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="Periodos" >
+			<groupExpression><![CDATA[$F{id_periodo}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="13"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="298"
+						y="0"
+						width="116"
+						height="13"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-19"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-BoldOblique" size="7" isBold="true" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[TOTAL POR PERIODO :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="414"
+						y="0"
+						width="47"
+						height="13"
+						forecolor="#E80A0A"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sumaxper_hasFisicas}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="0"
+						width="48"
+						height="13"
+						forecolor="#E01313"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sumaxper_hasLabor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="509"
+						y="0"
+						width="43"
+						height="13"
+						forecolor="#E21010"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{sumaxper_atendidos}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="Categorias" >
+			<groupExpression><![CDATA[$F{id_categoria}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="Sede" >
+			<groupExpression><![CDATA[$F{id_sede}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="Servicios" >
+			<groupExpression><![CDATA[$F{id_servicio}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="Rubro" >
+			<groupExpression><![CDATA[$F{id_rubro}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</background>
+		<title>
+			<band height="21"  isSplitAllowed="false" >
+				<staticText>
+					<reportElement
+						x="461"
+						y="8"
+						width="48"
+						height="13"
+						key="staticText-21"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Has. Labor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="509"
+						y="8"
+						width="43"
+						height="13"
+						key="staticText-22"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="6" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Prod. Atendidos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="181"
+						y="8"
+						width="61"
+						height="13"
+						backcolor="#EFF678"
+						key="staticText-23"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[C. SERVICIO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="242"
+						y="8"
+						width="56"
+						height="13"
+						key="staticText-24"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[SERVICIO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="351"
+						y="8"
+						width="63"
+						height="13"
+						key="staticText-25"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Productor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="298"
+						y="8"
+						width="53"
+						height="13"
+						key="staticText-26"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[RUBRO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="414"
+						y="8"
+						width="47"
+						height="13"
+						key="staticText-27"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Has. Fisicas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="132"
+						y="8"
+						width="49"
+						height="13"
+						backcolor="#EFF678"
+						key="staticText-28"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Lugar:]]></text>
+				</staticText>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="13"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="132"
+						height="13"
+						forecolor="#000000"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["PERIODO :  "+$F{periodo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="181"
+						y="0"
+						width="61"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{categoria}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="242"
+						y="0"
+						width="56"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{servicio}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="298"
+						y="0"
+						width="53"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{rubro}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="351"
+						y="0"
+						width="63"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{productor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="414"
+						y="0"
+						width="47"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{has_fisicas}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="132"
+						y="0"
+						width="49"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{sede}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="0"
+						width="48"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{has_labor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="509"
+						y="0"
+						width="43"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{nro_atendidos}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

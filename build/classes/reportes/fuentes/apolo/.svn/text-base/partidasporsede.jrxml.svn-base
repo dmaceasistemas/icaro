@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="partidasporsede"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="555"
+		 columnSpacing="0"
+		 leftMargin="20"
+		 rightMargin="20"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="encabezado" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="logoCVA" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="logoCPC" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pie" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT tbl_sas_sede.codigo_sede, tbl_sas_partidaporsede.codigo_sede AS cod_sede, tbl_sas_sede.nombre, tbl_sas_partidapresupuestaria.codigo_partida,
+tbl_sas_detalle_partidaporsede.monto, tbl_sas_partidaporsede.ano
+FROM tbl_sas_sede, tbl_sas_partidapresupuestaria, tbl_sas_detalle_partidaporsede, tbl_sas_partidaporsede
+WHERE (tbl_sas_sede.codigo_sede = tbl_sas_partidaporsede.codigo_sede) AND (tbl_sas_partidaporsede.id = tbl_sas_detalle_partidaporsede.id)
+AND (tbl_sas_partidapresupuestaria.id_partida = tbl_sas_detalle_partidaporsede.id_partida)
+ORDER BY tbl_sas_sede.codigo_sede;]]></queryString>
+
+	<field name="codigo_sede" class="java.lang.Integer"/>
+	<field name="cod_sede" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="codigo_partida" class="java.lang.String"/>
+	<field name="monto" class="java.lang.Double"/>
+	<field name="ano" class="java.lang.Integer"/>
+
+
+		<group  name="ano" >
+			<groupExpression><![CDATA[$F{ano}]]></groupExpression>
+			<groupHeader>
+			<band height="14"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="16"
+						y="0"
+						width="138"
+						height="14"
+						forecolor="#FFFFFF"
+						backcolor="#999999"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="Sawasdee" size="8"/>
+					</textElement>
+				<text><![CDATA[Año]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="165"
+						y="0"
+						width="374"
+						height="14"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="Sawasdee" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{ano}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="17"
+						y="0"
+						width="522"
+						height="1"
+						key="line"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="404"
+						y="-13"
+						width="68"
+						height="12"
+						key="staticText-5"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<text><![CDATA[Originado por:]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="3"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="sede" >
+			<groupExpression><![CDATA[$F{codigo_sede}]]></groupExpression>
+			<groupHeader>
+			<band height="14"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="16"
+						y="0"
+						width="138"
+						height="14"
+						forecolor="#000000"
+						backcolor="#FFFF99"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="Sawasdee" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{codigo_sede}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="154"
+						y="0"
+						width="385"
+						height="14"
+						backcolor="#FFFF99"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="Sawasdee" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="3"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="codigo_partida" >
+			<groupExpression><![CDATA[$F{codigo_partida}]]></groupExpression>
+			<groupHeader>
+			<band height="15"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="16"
+						y="0"
+						width="138"
+						height="14"
+						backcolor="#FF9999"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Partida Presupuestaria:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="154"
+						y="0"
+						width="374"
+						height="15"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{codigo_partida}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="3"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="15"
+						y="-2"
+						width="524"
+						height="1"
+						key="line"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="115"  isSplitAllowed="true" >
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="2"
+						width="535"
+						height="50"
+						key="image-1"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{encabezado}]]></imageExpression>
+				</image>
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="518"
+						y="0"
+						width="26"
+						height="33"
+						key="image-2"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logoCPC}]]></imageExpression>
+				</image>
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="488"
+						y="2"
+						width="30"
+						height="33"
+						key="image-3"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logoCVA}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="10"
+						y="54"
+						width="120"
+						height="9"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Corporación Venezolana Agraria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="404"
+						y="89"
+						width="68"
+						height="12"
+						key="staticText-2"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<text><![CDATA[Barquisimeto]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="472"
+						y="89"
+						width="72"
+						height="12"
+						key="textField-1"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="137"
+						y="74"
+						width="281"
+						height="13"
+						key="staticText-3"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font isBold="false"/>
+					</textElement>
+				<text><![CDATA[Sistema Autogestionado de Salud]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="137"
+						y="54"
+						width="281"
+						height="21"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PARTIDAS PRESUPUESTARIAS POR SEDE]]></text>
+				</staticText>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="17"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="16"
+						y="0"
+						width="138"
+						height="16"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[MONTO]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="156"
+						y="1"
+						width="374"
+						height="15"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{monto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="3"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="29"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="520"
+						y="3"
+						width="33"
+						height="25"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-2"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font fontName="Sawasdee" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="331"
+						y="3"
+						width="182"
+						height="25"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-3"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right">
+						<font fontName="Sawasdee" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="10"
+						y="2"
+						width="532"
+						height="23"
+						key="image-4"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{pie}]]></imageExpression>
+				</image>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

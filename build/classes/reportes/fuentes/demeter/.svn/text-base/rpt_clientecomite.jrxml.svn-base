@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clientecomite" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("/home/erix/Imágenes/logopc.png")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IdComite" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+  tbl_dem_clientes.str_nombre,
+  tbl_dem_clientes.str_cedurif,
+  tbl_dem_clientes.str_email,
+  tbl_dem_tipo_clientes.str_descripcion as tipocliente,
+  tbl_dem_comite_mecanizacion.str_descripcion as nombreconsejomecanisado,
+  tbl_dem_comite_mecanizacion.int_idconsejo,
+  tbl_dem_tipo_consejos.str_descripcion as tipoconsejo,
+  tbl_dem_consejos_comunales.str_descripcion as consejocomunal,
+
+  voceroprin.str_nombre as  voceroprin,
+vocerosec.str_nombre as vocerosec
+
+FROM
+  public.tbl_dem_comite_mecanizacion join   public.tbl_dem_cliente_comite on  tbl_dem_comite_mecanizacion.seq_idcomite = tbl_dem_cliente_comite.int_idcomite
+ join  public.tbl_dem_clientes on  tbl_dem_cliente_comite.int_idcliente = tbl_dem_clientes.seq_idcliente
+ join tbl_dem_tipo_clientes on seq_idtipocliente = int_tipocliente
+ join   public.tbl_dem_consejos_comunales on  tbl_dem_comite_mecanizacion.int_idconsejo = tbl_dem_consejos_comunales.seq_idconsejo
+  join public.tbl_dem_tipo_consejos on tbl_dem_consejos_comunales.int_tipoconsejo = tbl_dem_tipo_consejos.seq_idtipcon
+ left join  tbl_dem_voceros_comite  on public.tbl_dem_voceros_comite.int_idcomite =tbl_dem_comite_mecanizacion.seq_idcomite
+left join public.tbl_dem_clientes as voceroprin  on public.tbl_dem_voceros_comite.int_idclientepv =voceroprin.seq_idcliente
+left join  public.tbl_dem_clientes as vocerosec on public.tbl_dem_voceros_comite.int_idclientesv =vocerosec.seq_idcliente
+
+where tbl_dem_comite_mecanizacion.seq_idcomite= $P{IdComite}]]>
+	</queryString>
+	<field name="str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_cedurif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipocliente" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreconsejomecanisado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="int_idconsejo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoconsejo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consejocomunal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voceroprin" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vocerosec" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="93" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="460" y="13" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="213" y="33" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="13" width="378" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="53" width="413" height="32"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<text><![CDATA[Direcciòn Fiscal: Av. Libertador entre calles 38 y 39 Edif. CVA piso PB Ofic. Central Zona Industrial 1 Barquisimeto Estado Lara Telef: (0251)237.40.26]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="67" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="10" width="550" height="6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="10" y="16" width="488" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Clientes del comite " +" "+$F{nombreconsejomecanisado}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="10" y="36" width="550" height="6"/>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="110" splitType="Stretch">
+			<staticText>
+				<reportElement x="35" y="13" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comite:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="66" width="229" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Integrantes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="86" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="86" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI/RIF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="86" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="86" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="10" y="7" width="550" height="6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="140" y="13" width="358" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreconsejomecanisado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="33" width="200" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{consejocomunal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="33" width="123" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipoconsejo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Prevent">
+			<textField>
+				<reportElement x="157" y="0" width="100" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_cedurif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="0" width="100" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipocliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="100" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="157" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement x="140" y="30" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Segundo vocero]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="267" y="30" width="243" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vocerosec}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="10" y="50" width="550" height="6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="140" y="10" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Primer vocero]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="267" y="10" width="243" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{voceroprin}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="7" width="550" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

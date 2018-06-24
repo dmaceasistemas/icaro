@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gasto_viaticos" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<subDataset name="dataset1"/>
+	<subDataset name="dataset2"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="banco" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT sv.int_idpercierre, u.coduniadm, u.denuniadm, pc.date_fechaini, 
+       pc.date_fechacierre, scb.nomban, SUM(svdt.dec_monto_solvi) AS monto
+FROM sigesp_espc.scv_cierre_viatico_dt svdt 
+JOIN scv_solicitudviatico sol ON svdt.str_codsolvia = sol.codsolvia 
+JOIN spg_unidadadministrativa u ON sol.coduniadm = u.coduniadm 
+JOIN sigesp_espc.scv_cierre_viatico sv ON svdt.id_cierreviatico = sv.seq_ser_idcierre 
+JOIN sigesp_espc.scv_periodo_cierre pc ON sv.int_idpercierre = pc.seq_ser_idpercierre 
+JOIN scb_banco scb ON sv.str_codban = scb.codban 
+WHERE u.coduniadm = $P{sede}
+AND scb.codban =$P{banco}
+GROUP BY 1,2,3,4,5,6 
+ORDER BY 1]]>
+	</queryString>
+	<field name="monto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="coduniadm" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="denuniadm" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="int_idpercierre" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date_fechaini" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date_fechacierre" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomban" class="java.lang.String"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="79">
+			<staticText>
+				<reportElement x="15" y="23" width="508" height="38"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[REPORTE GASTO DE VIATICOS POR SEDE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="15" y="11" width="524" height="1"/>
+			</line>
+			<line>
+				<reportElement x="15" y="71" width="524" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="126">
+			<rectangle>
+				<reportElement x="15" y="91" width="508" height="31"/>
+			</rectangle>
+			<line>
+				<reportElement x="360" y="90" width="1" height="31"/>
+			</line>
+			<rectangle>
+				<reportElement x="15" y="8" width="508" height="31"/>
+			</rectangle>
+			<line>
+				<reportElement x="123" y="8" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="26" y="15" width="74" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sede:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="96" width="286" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="96" width="74" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="15" y="41" width="508" height="31"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="25" y="46" width="75" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Banco:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="123" y="41" width="1" height="31"/>
+			</line>
+			<textField>
+				<reportElement x="132" y="48" width="270" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{coduniadm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="15" width="254" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{denuniadm}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40">
+			<rectangle>
+				<reportElement x="14" y="5" width="508" height="31"/>
+			</rectangle>
+			<line>
+				<reportElement x="359" y="5" width="1" height="31"/>
+			</line>
+			<textField>
+				<reportElement x="27" y="11" width="23" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{int_idpercierre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="11" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{date_fechaini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="11" width="120" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{date_fechacierre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="171" y="11" width="14" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[al]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="11" width="8" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="11" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="3"/>
+	</pageFooter>
+	<summary>
+		<band height="42">
+			<textField>
+				<reportElement x="416" y="6" width="106" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="361" y="6" width="41" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

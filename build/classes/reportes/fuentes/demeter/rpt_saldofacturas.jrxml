@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cierre caja" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="293"/>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("/home/erix/Imágenes/logopc.png")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     tbl_dem_documentofiscal."dbl_saldo" AS tbl_dem_documentofiscal_dbl_saldo,
+     tbl_dem_documentofiscal."dbl_montobase" AS tbl_dem_documentofiscal_dbl_montobase,
+     tbl_dem_documentofiscal."dbl_montototal" AS tbl_dem_documentofiscal_dbl_montototal,
+     tbl_dem_documentofiscal."dtm_fecha" AS tbl_dem_documentofiscal_dtm_fecha,
+     tbl_dem_documentofiscal."int_nrocontrol" AS tbl_dem_documentofiscal_int_nrocontrol,
+     tbl_dem_documentofiscal."str_serie" AS tbl_dem_documentofiscal_str_serie,
+     tbl_dem_documentofiscal."seq_iddocumento" AS tbl_dem_documentofiscal_seq_iddocumento,
+     tbl_dem_clientes."seq_idcliente" AS tbl_dem_clientes_seq_idcliente,
+     tbl_dem_clientes."str_nombre" AS tbl_dem_clientes_str_nombre,
+     tbl_dem_clientes."str_cedurif" AS tbl_dem_clientes_str_cedurif
+FROM
+     "public"."tbl_dem_clientes" tbl_dem_clientes INNER JOIN "administracion"."tbl_dem_documentofiscal" tbl_dem_documentofiscal ON tbl_dem_clientes."seq_idcliente" = tbl_dem_documentofiscal."int_idpagador"
+where  tbl_dem_documentofiscal.dbl_saldo>1.0000
+order by  tbl_dem_clientes."str_nombre"]]>
+	</queryString>
+	<field name="tbl_dem_documentofiscal_dbl_saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_dbl_montobase" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_dbl_montototal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_dtm_fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_int_nrocontrol" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_str_serie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_seq_iddocumento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_seq_idcliente" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_cedurif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="monto_total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tbl_dem_documentofiscal_dbl_montototal}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="monto_total_cliente" class="java.lang.Double" resetType="Group" resetGroup="clientes" calculation="Sum">
+		<variableExpression><![CDATA[$F{tbl_dem_documentofiscal_dbl_montototal}]]></variableExpression>
+	</variable>
+	<variable name="saldo_total_cliente" class="java.lang.Double" resetType="Group" resetGroup="clientes" calculation="Sum">
+		<variableExpression><![CDATA[$F{tbl_dem_documentofiscal_dbl_saldo}]]></variableExpression>
+	</variable>
+	<variable name="saldo_total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tbl_dem_documentofiscal_dbl_saldo}]]></variableExpression>
+	</variable>
+	<group name="clientes" keepTogether="true">
+		<groupExpression><![CDATA[$F{tbl_dem_clientes_str_nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="63">
+				<textField>
+					<reportElement x="132" y="11" width="230" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_clientes_str_nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="18" y="40" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nº de control]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="479" y="40" width="83" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Saldo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="148" y="40" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="281" y="40" width="100" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="18" y="13" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[cliente]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="18" y="5" width="544" height="6"/>
+				</rectangle>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="281" y="11" width="100" height="20"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{monto_total_cliente}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="18" y="35" width="544" height="6"/>
+				</rectangle>
+				<textField pattern="#,##0.00">
+					<reportElement x="479" y="11" width="83" height="20"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldo_total_cliente}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="404" y="11" width="75" height="20"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Saldo Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="197" y="11" width="84" height="20"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto Cliente]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="6" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="91" y="6" width="378" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="26" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="46" width="413" height="32"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<text><![CDATA[Direcciòn Fiscal: Av. Libertador entre calles 38 y 39 Edif. CVA piso PB Ofic. Central Zona Industrial 1 Barquisimeto Estado Lara Telef: (0251)237.40.26]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="52" splitType="Stretch">
+			<rectangle>
+				<reportElement x="18" y="9" width="544" height="6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="18" y="46" width="544" height="6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="18" y="19" width="544" height="27"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Saldo de facturas"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="148" y="1" width="100" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{tbl_dem_documentofiscal_dtm_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="1" width="100" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_documentofiscal_str_serie}+"-"+$F{tbl_dem_documentofiscal_int_nrocontrol}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="479" y="1" width="83" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tbl_dem_documentofiscal_dbl_saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="281" y="1" width="100" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tbl_dem_documentofiscal_dbl_montototal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="451" y="9" width="81" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="531" y="9" width="41" height="13"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="91" y="12" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Total]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="207" y="12" width="155" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{monto_total}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="18" y="6" width="544" height="6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="18" y="32" width="544" height="6"/>
+			</rectangle>
+			<textField pattern="#,##0.00">
+				<reportElement x="472" y="12" width="100" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldo_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="369" y="12" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Total]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

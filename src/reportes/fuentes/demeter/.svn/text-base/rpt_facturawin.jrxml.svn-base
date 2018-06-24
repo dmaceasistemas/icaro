@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura002" language="groovy" pageWidth="612" pageHeight="792" columnWidth="566" leftMargin="0" rightMargin="0" topMargin="39" bottomMargin="0">
+	<property name="ireport.zoom" value="2.357947691000002"/>
+	<property name="ireport.x" value="611"/>
+	<property name="ireport.y" value="336"/>
+	<parameter name="NumeroFactura" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     tbl_dem_documentofiscal."str_serie" AS tbl_dem_documentofiscal_str_serie,
+     tbl_dem_documentofiscal."int_nrocontrol" AS tbl_dem_documentofiscal_int_nrocontrol,
+     tbl_dem_documentofiscal."dtm_fecha" AS tbl_dem_documentofiscal_dtm_fecha,
+     tbl_dem_documentofiscaldetalle."dbl_cantidad" AS tbl_dem_documentofiscaldetalle_dbl_cantidad,
+     tbl_dem_documentofiscaldetalle."dbl_preciounitario" AS tbl_dem_documentofiscaldetalle_dbl_preciounitario,
+     tbl_dem_clientes."str_nombre" AS tbl_dem_clientes_str_nombre,
+     tbl_dem_clientes."str_cedurif" AS tbl_dem_clientes_str_cedurif,
+     tbl_dem_servicios."str_nomserv" AS tbl_dem_servicios_str_nomserv,
+     tbl_dem_documentofiscaldetalle."str_comdes" AS tbl_dem_documentofiscaldetalle_str_comdes,
+     tbl_dem_direccion."str_codest" AS tbl_dem_direccion_str_codest,
+     tbl_dem_direccion."str_codmun" AS tbl_dem_direccion_str_codmun,
+     tbl_dem_direccion."str_codpar" AS tbl_dem_direccion_str_codpar,
+     tbl_dem_direccion."str_codcom" AS tbl_dem_direccion_str_codcom,
+     tbl_dem_direccion."str_sector" AS tbl_dem_direccion_str_sector,
+     tbl_dem_direccion."str_infadicional" AS tbl_dem_direccion_str_infadicional,
+     tbl_dem_direccion."str_ptoreferencia" AS tbl_dem_direccion_str_ptoreferencia,
+     sigesp_estados."desest" AS sigesp_estados_desest,
+     sigesp_parroquia."denpar" AS sigesp_parroquia_denpar,
+     sigesp_municipio_A."denmun" AS sigesp_municipio_A_denmun,
+     tbl_dem_documentofiscal."seq_iddocumento" AS tbl_dem_documentofiscal_seq_iddocumento,
+     tbl_dem_documentofiscaldetalle."seq_iddetalle" AS tbl_dem_documentofiscaldetalle_seq_iddetalle,
+     tbl_dem_documentofiscaldetalle."int_iddocumento" AS tbl_dem_documentofiscaldetalle_int_iddocumento
+     ,dbl_base,
+  dbl_pporcentaje,
+  int_monto as  monoimpuest, dbl_montobase, dbl_descuento, dbl_pordesc
+FROM
+     "administracion"."tbl_dem_documentofiscal" tbl_dem_documentofiscal INNER JOIN "administracion"."tbl_dem_documentofiscaldetalle" tbl_dem_documentofiscaldetalle ON tbl_dem_documentofiscal."seq_iddocumento" = tbl_dem_documentofiscaldetalle."int_iddocumento"
+      JOIN "public"."tbl_dem_clientes" tbl_dem_clientes ON tbl_dem_documentofiscal."int_idpagador" = tbl_dem_clientes."seq_idcliente"
+      JOIN "public"."tbl_dem_direccion" tbl_dem_direccion ON tbl_dem_documentofiscal."int_iddireccion" = tbl_dem_direccion."seq_iddireccion"
+    JOIN "public"."tbl_dem_servicios" tbl_dem_servicios ON tbl_dem_documentofiscaldetalle."int_idservicio" = tbl_dem_servicios."seq_idservicio"
+     AND tbl_dem_clientes."seq_idcliente" = tbl_dem_direccion."int_idcliente"
+    JOIN "public"."sigesp_parroquia" sigesp_parroquia ON tbl_dem_direccion."str_codpais" = sigesp_parroquia."codpai"
+     AND sigesp_parroquia."codmun" = tbl_dem_direccion."str_codmun"
+     AND sigesp_parroquia."codpar" = tbl_dem_direccion."str_codpar"
+     AND sigesp_parroquia."codest" = tbl_dem_direccion."str_codest"
+     JOIN "public"."sigesp_municipio" sigesp_municipio ON sigesp_parroquia."codpai" = sigesp_municipio."codpai"
+     AND sigesp_municipio."codmun" = sigesp_parroquia."codmun"
+     AND sigesp_municipio."codest" = sigesp_parroquia."codest"
+    JOIN "public"."sigesp_municipio" sigesp_municipio_A ON sigesp_parroquia."codpai" = sigesp_municipio_A."codpai"
+     AND sigesp_municipio_A."codmun" = sigesp_parroquia."codmun"
+     AND sigesp_municipio_A."codest" = sigesp_parroquia."codest"
+    JOIN "public"."sigesp_estados" sigesp_estados ON sigesp_municipio_A."codpai" = sigesp_estados."codpai"
+     AND sigesp_estados."codest" = sigesp_municipio_A."codest"
+     AND sigesp_estados."codpai" = sigesp_municipio."codpai"
+     AND sigesp_estados."codest" = sigesp_municipio."codest"
+left  JOIN administracion.tbl_dem_documentoimpuesto ON tbl_dem_documentofiscal.seq_iddocumento=administracion.tbl_dem_documentoimpuesto.int_iddocumento and  administracion.tbl_dem_documentoimpuesto.int_idtipoimpuesto=1
+join administracion.tbl_dem_tipodocumentolegal on tbl_dem_documentofiscal.int_idtipodocumento=tbl_dem_tipodocumentolegal.seq_idtipfac
+
+
+WHERE
+     tbl_dem_documentofiscal."seq_iddocumento" = $P{NumeroFactura}]]>
+	</queryString>
+	<field name="tbl_dem_documentofiscal_str_serie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_int_nrocontrol" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_dtm_fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscaldetalle_dbl_cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscaldetalle_dbl_preciounitario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_cedurif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_servicios_str_nomserv" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscaldetalle_str_comdes" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_codest" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_codmun" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_codpar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_codcom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_sector" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_infadicional" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_direccion_str_ptoreferencia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sigesp_estados_desest" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sigesp_parroquia_denpar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sigesp_municipio_a_denmun" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_seq_iddocumento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscaldetalle_seq_iddetalle" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscaldetalle_int_iddocumento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dbl_base" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dbl_pporcentaje" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monoimpuest" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dbl_montobase" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dbl_descuento" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dbl_pordesc" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="direc" class="java.lang.String"/>
+	<variable name="monto" class="java.lang.Double"/>
+	<variable name="subtotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tbl_dem_documentofiscaldetalle_dbl_cantidad}*$F{tbl_dem_documentofiscaldetalle_dbl_preciounitario}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="total" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{iva}]]></variableExpression>
+	</variable>
+	<variable name="iva" class="java.lang.Double">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="106" splitType="Stretch">
+			<textField pattern="dd MM yyyy">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="473" y="8" width="91" height="20" backcolor="#FF0000"/>
+				<textElement>
+					<font fontName="URWGothicL" size="14"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{tbl_dem_documentofiscal_dtm_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="83" y="34" width="262" height="18" backcolor="#00FF00"/>
+				<textElement>
+					<font fontName="URWGothicL" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_clientes_str_nombre}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Transparent" x="83" y="49" width="307" height="18" backcolor="#FF0000"/>
+				<textElement textAlignment="Left">
+					<font fontName="URWGothicL" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Estado "+$F{sigesp_estados_desest}+" Municipio "+$F{sigesp_municipio_a_denmun}+" Parroquia "+$F{sigesp_parroquia_denpar}+" Sector "+$F{tbl_dem_direccion_str_sector}+" "+$F{tbl_dem_direccion_str_infadicional}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="200" y="65" width="100" height="16" backcolor="#0000FF"/>
+				<textElement>
+					<font fontName="URWGothicL" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_clientes_str_cedurif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="58" width="54" height="20"/>
+				<textElement>
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_documentofiscal_str_serie}+"-"+$F{tbl_dem_documentofiscal_int_nrocontrol}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Prevent">
+			<textField pattern="###0.00">
+				<reportElement mode="Transparent" x="412" y="0" width="57" height="15" backcolor="#00FF00"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="URWGothicL" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tbl_dem_documentofiscaldetalle_dbl_preciounitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="100" y="0" width="233" height="15" backcolor="#FF0000"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom" lineSpacing="Single">
+					<font fontName="URWGothicL" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_servicios_str_nomserv}+"   "+$F{tbl_dem_documentofiscaldetalle_str_comdes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement mode="Transparent" x="25" y="0" width="56" height="15" backcolor="#00FF00"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="URWGothicL" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tbl_dem_documentofiscaldetalle_dbl_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement mode="Transparent" x="491" y="0" width="60" height="15" backcolor="#FF0000"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="URWGothicL" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{tbl_dem_documentofiscaldetalle_dbl_cantidad}*$F{tbl_dem_documentofiscaldetalle_dbl_preciounitario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="175" splitType="Stretch">
+			<textField pattern="###0.00">
+				<reportElement mode="Transparent" x="491" y="49" width="60" height="14" backcolor="#00FF00"/>
+				<textElement textAlignment="Right">
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{dbl_montobase}-$F{dbl_descuento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement mode="Transparent" x="491" y="92" width="60" height="14" backcolor="#00FF00"/>
+				<textElement textAlignment="Right">
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{monoimpuest}+$F{dbl_montobase}-$F{dbl_descuento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="413" y="62" width="60" height="14"/>
+				<textElement>
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dbl_base}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="347" y="62" width="44" height="14"/>
+				<textElement>
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dbl_pporcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="491" y="26" width="60" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dbl_descuento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="435" y="26" width="41" height="14"/>
+				<textElement>
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dbl_pordesc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="358" y="26" width="55" height="14"/>
+				<textElement>
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<text><![CDATA[descuento]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="491" y="0" width="60" height="14"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dbl_montobase}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="491" y="62" width="60" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="URWGothicL"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{monoimpuest}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="340" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

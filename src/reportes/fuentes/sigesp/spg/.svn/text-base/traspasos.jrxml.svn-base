@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<style name="Crosstab Data Text" isDefault="false" hAlign="Center"/>
+	<parameter name="tipo" class="java.lang.String"/>
+	<parameter name="compdes" class="java.lang.String"/>
+	<parameter name="comphas" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select a.procede,a.comprobante,a.fecha,a.descripcion,a.total,a.estapro,a.fechaconta,a.fechaanula,a.codfuefin,
+b.codestpro1,b.codestpro2,b.codestpro3,b.spg_cuenta,b.operacion,b.monto,b.codfuefin
+from sigesp_cmp_md a 
+join spg_dtmp_cmp b on a.comprobante=b.comprobante
+
+where a.procede=$P{tipo}
+and a.comprobante between $P{compdes} and $P{comphas}
+ORDER BY a.comprobante]]>
+	</queryString>
+	<field name="procede" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="comprobante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estapro" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaconta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaanula" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codfuefin" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codestpro1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codestpro2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codestpro3" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="spg_cuenta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="operacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="comprobante">
+		<groupExpression><![CDATA[$F{comprobante}]]></groupExpression>
+		<groupHeader>
+			<band height="97">
+				<rectangle radius="10">
+					<reportElement x="13" y="9" width="533" height="65"/>
+				</rectangle>
+				<textField>
+					<reportElement x="109" y="20" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{comprobante}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="109" y="46" width="429" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="438" y="19" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="24" y="20" width="85" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Comprobante:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="24" y="46" width="74" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripción:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="389" y="19" width="46" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<rectangle radius="0">
+					<reportElement x="19" y="79" width="523" height="18"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="14" y="83" width="253" height="12"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Estructura Programática]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="268" y="83" width="94" height="12"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Partida]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="362" y="83" width="85" height="12"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="447" y="83" width="94" height="13"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Operación]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="29"/>
+	</title>
+	<pageHeader>
+		<band height="79">
+			<line>
+				<reportElement x="0" y="19" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="98" y="22" width="357" height="33"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE TRASPASOS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="57" width="555" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="29">
+			<textField>
+				<reportElement x="150" y="8" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codestpro2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="8" width="32" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codestpro3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="8" width="84" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{spg_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="368" y="8" width="72" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="8" width="75" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{operacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="8" width="126" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codestpro1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="19" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="263" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="361" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="447" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="541" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="19" y="26" width="523" height="1"/>
+			</line>
+			<line>
+				<reportElement x="19" y="0" width="523" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54"/>
+	</pageFooter>
+	<summary>
+		<band height="42"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="rpt_facturasdiarias"
+
+		 language="groovy"		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="555"
+		 columnSpacing="0"
+		 leftMargin="20"
+		 rightMargin="20"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.zoom" value="1.331000000000001" />
+	<property name="ireport.x" value="36" />
+	<property name="ireport.y" value="0" />
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="FechaFactura" isForPrompting="true" class="java.util.Date"/>
+	<queryString><![CDATA[SELECT
+  tbl_dem_documentofiscal.seq_iddocumento,
+  tbl_dem_documentofiscal.str_serie,
+  tbl_dem_documentofiscal.int_nrocontrol,
+  tbl_dem_documentofiscal.dbl_montobase,
+  tbl_dem_documentofiscal.dbl_descuento,
+ tbl_dem_documentofiscal.dtm_fecha,
+ sum (tbl_dem_documentoimpuesto.int_monto) as monto_imp,
+ tbl_dem_clientes.str_nombre
+FROM
+  administracion.tbl_dem_documentofiscal
+  join public.tbl_dem_clientes on int_idpagador=seq_idcliente
+ join administracion.tbl_dem_documentofiscaldetalle on int_iddocumento=seq_iddocumento
+  left join administracion.tbl_dem_documentoimpuesto on  administracion.tbl_dem_documentofiscal.seq_iddocumento=administracion.tbl_dem_documentoimpuesto.int_iddocumento
+where  tbl_dem_documentofiscal.dtm_fecha=$P{FechaFactura}
+GROUP BY tbl_dem_documentofiscal.seq_iddocumento,tbl_dem_documentofiscal.str_serie, tbl_dem_documentofiscal.int_nrocontrol,  tbl_dem_documentofiscal.dbl_montobase,
+  tbl_dem_documentofiscal.dbl_descuento,tbl_dem_clientes.str_nombre, tbl_dem_documentofiscal.dtm_fecha]]></queryString>
+
+	<field name="seq_iddocumento" class="java.lang.Integer"/>
+	<field name="str_serie" class="java.lang.String"/>
+	<field name="int_nrocontrol" class="java.lang.Integer"/>
+	<field name="dbl_montobase" class="java.math.BigDecimal"/>
+	<field name="dbl_descuento" class="java.math.BigDecimal"/>
+	<field name="dtm_fecha" class="java.sql.Date"/>
+	<field name="monto_imp" class="java.math.BigDecimal"/>
+	<field name="str_nombre" class="java.lang.String"/>
+
+	<sortField name="seq_iddocumento" />
+
+	<variable name="neto" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{dbl_montobase}-$F{dbl_descuento}+$F{monto_imp}]]></variableExpression>
+	</variable>
+	<variable name="bruto" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{dbl_montobase}]]></variableExpression>
+	</variable>
+	<variable name="descuento" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{dbl_descuento}]]></variableExpression>
+	</variable>
+	<variable name="impuesto" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{monto_imp}]]></variableExpression>
+	</variable>
+	<variable name="totalneto" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{neto}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="82"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="472"
+						y="6"
+						width="100"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="91"
+						y="6"
+						width="378"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="207"
+						y="26"
+						width="100"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="91"
+						y="46"
+						width="413"
+						height="32"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center" lineSpacing="Single">
+						<font/>
+					</textElement>
+				<text><![CDATA[Direcciòn Fiscal: Av. Libertador entre calles 38 y 39 Edif. CVA piso PB Ofic. Central Zona Industrial 1 Barquisimeto Estado Lara Telef: (0251)237.40.26]]></text>
+				</staticText>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="55"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="18"
+						y="9"
+						width="544"
+						height="6"
+						key="rectangle"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="18"
+						y="46"
+						width="544"
+						height="6"
+						key="rectangle"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="62"
+						y="21"
+						width="303"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Facturas Y Notas Al"+" "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="365"
+						y="21"
+						width="110"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="16" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$P{FechaFactura}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="31"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="18"
+						y="5"
+						width="25"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Fact.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="53"
+						y="5"
+						width="38"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="232"
+						y="5"
+						width="42"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Nº Cont]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="284"
+						y="5"
+						width="38"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Bruto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="350"
+						y="5"
+						width="70"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Descuento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="425"
+						y="5"
+						width="55"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Impuesto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="486"
+						y="5"
+						width="38"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Neto]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="18"
+						y="25"
+						width="544"
+						height="1"
+						key="line"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="13"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="18"
+						y="2"
+						width="25"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{seq_iddocumento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="232"
+						y="2"
+						width="42"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{str_serie}+"-"+$F{int_nrocontrol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="284"
+						y="2"
+						width="59"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{dbl_montobase}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="350"
+						y="2"
+						width="70"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{dbl_descuento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="48"
+						y="2"
+						width="169"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{str_nombre}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="425"
+						y="2"
+						width="55"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{monto_imp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="486"
+						y="2"
+						width="63"
+						height="10"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{neto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="49"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="48"
+						y="12"
+						width="59"
+						height="20"
+						key="staticText"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="486"
+						y="12"
+						width="76"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalneto}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement
+						x="18"
+						y="6"
+						width="544"
+						height="6"
+						key="rectangle"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="18"
+						y="32"
+						width="544"
+						height="6"
+						key="rectangle"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="284"
+						y="12"
+						width="59"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{bruto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="350"
+						y="12"
+						width="70"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{descuento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="425"
+						y="12"
+						width="55"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{impuesto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="47"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

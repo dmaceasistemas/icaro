@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>icaro</display-name>
+	<servlet>
+		<description>
+		</description>
+		<display-name>inicio</display-name>
+		<servlet-name>inicio</servlet-name>
+		<servlet-class>
+		servlets.inicio</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<description>
+		</description>
+		
+		<display-name>demeter</display-name>
+		<servlet-name>demeter</servlet-name>
+		<servlet-class>servlets.demeter</servlet-class>		
+	</servlet>
+	
+	<servlet>
+		<description>
+		</description>
+		
+		<display-name>apolo</display-name>
+		<servlet-name>apolo</servlet-name>
+		<servlet-class>servlets.apolo</servlet-class>		
+	</servlet>
+	
+	<servlet>
+		<description>
+		</description>
+		
+		<display-name>sigesp</display-name>
+		<servlet-name>sigesp</servlet-name>
+		<servlet-class>servlets.sigesp</servlet-class>		
+	</servlet>
+
+	<servlet>
+		<description>
+		</description>
+		
+		<display-name>seguimiento</display-name>
+		<servlet-name>seguimiento</servlet-name>
+		<servlet-class>servlets.seguimiento</servlet-class>		
+	</servlet>
+
+
+	<servlet>
+		<description>
+		</description>
+		
+		<display-name>intranet</display-name>
+		<servlet-name>intranet</servlet-name>
+		<servlet-class>servlets.intranet</servlet-class>		
+	</servlet>
+
+
+	<servlet>
+		<description>
+		</description>
+		
+		<display-name>wara</display-name>
+		<servlet-name>wara</servlet-name>
+		<servlet-class>servlets.wara</servlet-class>		
+	</servlet>
+
+	
+	<servlet-mapping>
+		<servlet-name>inicio</servlet-name>
+		<url-pattern>/inicio</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>demeter</servlet-name>
+		<url-pattern>/demeter</url-pattern>
+	</servlet-mapping>
+
+	
+	<servlet-mapping>
+		<servlet-name>apolo</servlet-name>
+		<url-pattern>/apolo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>sigesp</servlet-name>
+		<url-pattern>/sigesp</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>seguimiento</servlet-name>
+		<url-pattern>/seguimiento</url-pattern>
+	</servlet-mapping>
+	
+	 <context-param>
+		<param-name>contextConfigLocation</param-name>
+  		  <param-value>classpath:/configuracion/conexion/configdemeter.xml</param-value>
+	</context-param>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+<mime-mapping>
+<extension>docx</extension>
+<mime-type>application/vnd.openxmlformats-officedocument.wordprocessingml.document</mime-type>
+</mime-mapping>
+
+<mime-mapping>
+<extension>rtf</extension>
+<mime-type>application/rtf</mime-type>
+</mime-mapping>
+
+<mime-mapping>
+<extension>rtf</extension>
+<mime-type>application/x-rtf</mime-type>
+</mime-mapping>
+
+<mime-mapping>
+<extension>rtf</extension>
+<mime-type>text/richtext</mime-type>
+</mime-mapping>
+  <mime-mapping>
+        <!-- OpenDocument Text -->
+        <extension>odt</extension>
+        <mime-type>application/vnd.oasis.opendocument.text</mime-type>
+    </mime-mapping>
+</web-app>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Serviciosaprestar" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="432"/>
+	<parameter name="Descuento" class="java.lang.Double" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     tbl_dem_servicios."str_nomserv" AS str_nomserv,
+     tbl_dem_tipo_impuesto."dbl_porcentaje" AS tipo_impuesto_dbl_porcentaje,
+     tbl_dem_servicios_prestar."dbl_precio" AS precio,
+     tbl_dem_servicios_prestar."dbl_descuento" AS descuento,
+     tbl_dem_servicios_prestar."str_formula" AS formula,
+     tbl_dem_tipo_impuesto."str_descripcion" AS descripcionimpuesto,
+     tbl_dem_tipo_servicio."str_nombre" AS tipo_servicio_str_nombre,
+     tbl_dem_unidad_medidas."str_abreviatura" AS abreviatura
+FROM
+     "public"."tbl_dem_servicios" tbl_dem_servicios INNER JOIN "public"."tbl_dem_servicios_prestar" tbl_dem_servicios_prestar ON tbl_dem_servicios."seq_idservicio" = tbl_dem_servicios_prestar."int_idservicio"
+     INNER JOIN "administracion"."tbl_dem_tipo_impuesto" tbl_dem_tipo_impuesto ON tbl_dem_servicios_prestar."int_idtipoimpuesto" = tbl_dem_tipo_impuesto."seq_idtipoimpuesto"
+     INNER JOIN "public"."tbl_dem_unidad_medidas" tbl_dem_unidad_medidas ON tbl_dem_servicios_prestar."int_idumedida" = tbl_dem_unidad_medidas."seq_idumedida"
+     INNER JOIN "public"."tbl_dem_tipo_servicio" tbl_dem_tipo_servicio ON tbl_dem_servicios."int_idtiposervicio" = tbl_dem_tipo_servicio."seq_idtiposervicio"
+GROUP BY
+     tbl_dem_servicios."str_nomserv",
+     tbl_dem_tipo_impuesto."dbl_porcentaje",
+     tbl_dem_servicios_prestar."dbl_precio",
+     tbl_dem_servicios_prestar."dbl_descuento",
+     tbl_dem_servicios_prestar."str_formula",
+     tbl_dem_tipo_impuesto."str_descripcion",
+     tbl_dem_tipo_servicio."str_nombre",
+     tbl_dem_unidad_medidas."str_abreviatura"
+order by  tbl_dem_tipo_servicio."str_nombre"]]>
+	</queryString>
+	<field name="str_nomserv" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_impuesto_dbl_porcentaje" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="precio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descuento" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="formula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcionimpuesto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_servicio_str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="abreviatura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="total" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{precio}+($F{precio}*($F{tipo_impuesto_dbl_porcentaje}/100))-($F{precio}*($P{Descuento}/100))]]></variableExpression>
+	</variable>
+	<group name="tiposervicio" keepTogether="true">
+		<groupExpression><![CDATA[$F{tipo_servicio_str_nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="78">
+				<rectangle>
+					<reportElement x="12" y="10" width="560" height="6"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="14" y="58" width="97" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="111" y="58" width="40" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="151" y="58" width="62" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Precio Base]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="274" y="58" width="47" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Imp. %]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="213" y="58" width="50" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tip Imp.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="400" y="58" width="96" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Formula ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="12" y="28" width="89" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[TIpo de servicio]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="28" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo_servicio_str_nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="496" y="58" width="72" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[precio unidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="332" y="58" width="68" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descuento]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="19">
+				<rectangle>
+					<reportElement x="12" y="10" width="560" height="6"/>
+				</rectangle>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="145" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="114" width="550" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Servicios a Prestar"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="10" y="108" width="562" height="6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="10" y="137" width="562" height="6"/>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="450" y="3" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="203" y="23" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="43" width="413" height="32"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<text><![CDATA[Direcciòn Fiscal: Av. Libertador entre calles 38 y 39 Edif. CVA piso PB Ofic. Central Zona Industrial 1 Barquisimeto Estado Lara Telef: (0251)237.40.26]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="3" width="378" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="7" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="101" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nomserv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="0" width="61" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcionimpuesto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="98" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{formula}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="151" y="0" width="62" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="274" y="0" width="47" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tipo_impuesto_dbl_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="498" y="0" width="72" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="0" width="68" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="40" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{abreviatura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

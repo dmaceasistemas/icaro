@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibo2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="13" bottomMargin="0">
+	<property name="ireport.zoom" value="1.024520183047606"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="37"/>
+	<scriptlet name="222" class="net.sf.jasperreports.engine.JRDefaultScriptlet"/>
+	<parameter name="NumeroRecibo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     tbl_dem_formapago."str_idcodemp" AS tbl_dem_formapago_str_idcodemp,
+     tbl_dem_formapago."str_idcodban" AS tbl_dem_formapago_str_idcodban,
+     tbl_dem_formapago."dtm_fecha" AS tbl_dem_formapago_dtm_fecha,
+     tbl_dem_formapago."dbl_monto" AS tbl_dem_formapago_dbl_monto,
+     fu_numero_letras(tbl_dem_recibo.dbl_monto)AS letra,
+     tbl_dem_formapago."str_numcue" AS tbl_dem_formapago_str_numcue,
+     tbl_dem_formapago."str_numdoc" AS tbl_dem_formapago_str_numdoc,
+     tbl_dem_recibo."str_control" AS tbl_dem_recibo_str_control,
+     tbl_dem_recibo."dbl_monto" AS tbl_dem_recibo_dbl_monto,
+     tbl_dem_recibo."dtm_fecha" AS tbl_dem_recibo_dtm_fecha,
+     tbl_dem_recibo."str_codemp" AS tbl_dem_recibo_str_codemp,
+     tbl_dem_recibo."str_sede" AS tbl_dem_recibo_str_sede,
+     tbl_dem_recibo."str_concepto" AS tbl_dem_recibo_str_concepto,
+     tbl_dem_recibo."bol_anulado" AS tbl_dem_recibo_bol_anulado,
+     tbl_dem_tipo_forma_pago_A."str_descripcion" AS tbl_dem_tipo_forma_pago_A_str_descripcion,
+     tbl_dem_documentofiscal."str_serie" AS tbl_dem_documentofiscal_str_serie,
+     tbl_dem_documentofiscal."int_nrocontrol" AS tbl_dem_documentofiscal_int_nrocontrol,
+     tbl_dem_documentofiscal."int_idpagador" AS tbl_dem_documentofiscal_int_idpagador,
+     tbl_dem_clientes."str_cedurif" AS tbl_dem_clientes_str_cedurif,
+     tbl_dem_clientes."str_nombre" AS tbl_dem_clientes_str_nombre,
+     tbl_dem_documentofiscal."seq_iddocumento" AS tbl_dem_documentofiscal_seq_iddocumento,
+     scb_banco."nomban" AS scb_banco_nomban,
+     tbl_dem_tipo_forma_pago_A."seq_idtipoformapago" AS tbl_dem_tipo_forma_pago_A_seq_idtipoformapago
+FROM
+     "administracion"."tbl_dem_documentofiscal" tbl_dem_documentofiscal INNER JOIN "administracion"."tbl_dem_recibo" tbl_dem_recibo ON tbl_dem_documentofiscal."seq_iddocumento" = tbl_dem_recibo."int_iddocumento"
+      left JOIN "administracion"."tbl_dem_formapago" tbl_dem_formapago ON tbl_dem_recibo."seq_idrecibo" = tbl_dem_formapago."int_idrecibo"
+      left JOIN "administracion"."tbl_dem_tipo_forma_pago" tbl_dem_tipo_forma_pago_A ON tbl_dem_formapago."int_idtipoformapago" = tbl_dem_tipo_forma_pago_A."seq_idtipoformapago"
+     left  JOIN "sigesp"."scb_banco" scb_banco ON tbl_dem_formapago."str_idcodemp" = scb_banco."codemp"
+     AND scb_banco."codban" = tbl_dem_formapago."str_idcodban"
+  left    JOIN "public"."tbl_dem_clientes" tbl_dem_clientes ON tbl_dem_documentofiscal."int_idpagador" = tbl_dem_clientes."seq_idcliente",
+     "administracion"."tbl_dem_tipo_forma_pago" tbl_dem_tipo_forma_pago
+
+WHERE
+     tbl_dem_recibo.seq_idrecibo = $P{NumeroRecibo}
+
+group by tbl_dem_formapago."str_idcodemp" ,
+     tbl_dem_formapago."str_idcodban" ,
+     tbl_dem_formapago."dtm_fecha",
+     tbl_dem_formapago."dbl_monto" ,
+     fu_numero_letras(tbl_dem_recibo.dbl_monto),
+     tbl_dem_formapago."str_numcue" ,
+     tbl_dem_formapago."str_numdoc" ,
+     tbl_dem_recibo."str_control" ,
+     tbl_dem_recibo."dbl_monto" ,
+     tbl_dem_recibo."dtm_fecha" ,
+     tbl_dem_recibo."str_codemp" ,
+     tbl_dem_recibo."str_sede" ,
+     tbl_dem_recibo."str_concepto" ,
+     tbl_dem_recibo."bol_anulado" ,
+     tbl_dem_tipo_forma_pago_A."str_descripcion" ,
+     tbl_dem_documentofiscal."str_serie"  ,
+     tbl_dem_documentofiscal."int_nrocontrol" ,
+     tbl_dem_documentofiscal."int_idpagador" ,
+     tbl_dem_clientes."str_cedurif" ,
+     tbl_dem_clientes."str_nombre",
+     tbl_dem_documentofiscal."seq_iddocumento" ,
+     scb_banco."nomban" ,
+     tbl_dem_tipo_forma_pago_A."seq_idtipoformapago"
+
+order by  tbl_dem_tipo_forma_pago_A."str_descripcion" asc limit 1]]>
+	</queryString>
+	<field name="tbl_dem_formapago_str_idcodemp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_formapago_str_idcodban" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_formapago_dtm_fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_formapago_dbl_monto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="letra" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_formapago_str_numcue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_formapago_str_numdoc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_str_control" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_dbl_monto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_dtm_fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_str_codemp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_str_sede" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_str_concepto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_recibo_bol_anulado" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_tipo_forma_pago_a_str_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_str_serie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_int_nrocontrol" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_int_idpagador" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_cedurif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_documentofiscal_seq_iddocumento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="scb_banco_nomban" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_tipo_forma_pago_a_seq_idtipoformapago" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="fechas" class="java.util.Date">
+		<variableExpression><![CDATA[$F{tbl_dem_recibo_dtm_fecha}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{tbl_dem_recibo_dtm_fecha}]]></initialValueExpression>
+	</variable>
+	<variable name="V1" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{tbl_dem_recibo_dbl_monto}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{tbl_dem_recibo_dbl_monto}*3]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="400" splitType="Stretch">
+			<textField>
+				<reportElement mode="Transparent" x="169" y="90" width="303" height="20" backcolor="#FF0000"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_clientes_str_nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="77" y="53" width="16" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$V{fechas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="450" y="160" width="134" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_recibo_str_concepto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="107" y="307" width="240" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_formapago_str_numcue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="175" y="181" width="311" height="20" backcolor="#FF0000"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_documentofiscal_seq_iddocumento}+"  "+ $F{tbl_dem_documentofiscal_str_serie}+"-"+$F{tbl_dem_documentofiscal_int_nrocontrol}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="197" y="57" width="100" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_recibo_str_sede}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd">
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="41" y="53" width="15" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$V{fechas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="110" y="53" width="31" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$V{fechas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="227" y="267" width="151" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{scb_banco_nomban}.equals("Ninguno")  ?  "" : $F{scb_banco_nomban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="450" y="51" width="100" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{tbl_dem_recibo_dbl_monto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement mode="Transparent" x="93" y="267" width="100" height="20" backcolor="#0000FF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_tipo_forma_pago_a_seq_idtipoformapago}.equals("2")  ?  $F{tbl_dem_formapago_str_numdoc} : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="93" y="287" width="100" height="20" backcolor="#FF0000"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_tipo_forma_pago_a_seq_idtipoformapago}.equals("3")  ?  "" : $F{tbl_dem_formapago_str_numdoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="129" y="247" width="88" height="20" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_tipo_forma_pago_a_str_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="155" y="112" width="342" height="20" backcolor="#0000FF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{letra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="26" width="100" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_recibo_str_control}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

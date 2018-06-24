@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gastoViaticoPersonal" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="194"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="tipo" class="java.lang.Integer"/>
+	<parameter name="cedula" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT codsolvia,codper,	
+        cedper,
+        nomper,
+        apeper,
+        desrut,
+        obssolvia,
+        fecsalvia,
+        fecregvia,
+        dec_monto_solvi,
+        codestpro2,
+        denestpro2
+FROM  viw_reporte_gasto_viatico_x_personal
+WHERE codestpro2=$P{sede}
+AND tipo=$P{tipo}
+AND cedper=$P{cedula}]]>
+	</queryString>
+	<field name="codsolvia" class="java.lang.String"/>
+	<field name="codper" class="java.lang.String"/>
+	<field name="cedper" class="java.lang.String"/>
+	<field name="nomper" class="java.lang.String"/>
+	<field name="apeper" class="java.lang.String"/>
+	<field name="desrut" class="java.lang.String"/>
+	<field name="obssolvia" class="java.lang.String"/>
+	<field name="fecsalvia" class="java.sql.Date"/>
+	<field name="fecregvia" class="java.sql.Date"/>
+	<field name="dec_monto_solvi" class="java.lang.Double"/>
+	<field name="codestpro2" class="java.lang.String"/>
+	<field name="denestpro2" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{dec_monto_solvi}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="77">
+			<rectangle>
+				<reportElement key="rectangle" x="15" y="15" width="768" height="53"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText" x="32" y="27" width="741" height="33"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[REPORTE GASTO DE VIATICOS POR PERSONAL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="49">
+			<rectangle>
+				<reportElement key="rectangle" x="14" y="8" width="523" height="32"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText" x="21" y="15" width="50" height="20"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sede:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="78" y="8" width="1" height="32"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="87" y="16" width="77" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codestpro2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="167" y="16" width="360" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{denestpro2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="40">
+			<rectangle>
+				<reportElement key="rectangle" x="7" y="12" width="788" height="26"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText" x="87" y="16" width="47" height="17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cédula]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="82" y="12" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="143" y="15" width="92" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="237" y="13" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="241" y="15" width="124" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="370" y="15" width="184" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ruta]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="367" y="13" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement key="line" x="557" y="12" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="561" y="15" width="78" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Salida]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="641" y="12" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="644" y="15" width="82" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Retorno]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line" x="731" y="12" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText" x="737" y="15" width="48" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="9" y="17" width="72" height="14"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Solicitud]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="139" y="13" width="1" height="26"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="53">
+			<rectangle>
+				<reportElement key="rectangle" x="7" y="6" width="788" height="42"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="85" y="12" width="51" height="25"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cedper}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="370" y="11" width="183" height="34"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{desrut}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="569" y="12" width="63" height="34"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecsalvia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="655" y="12" width="64" height="34"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecregvia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="737" y="12" width="49" height="34"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dec_monto_solvi}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line" x="731" y="6" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement key="line" x="641" y="6" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement key="line" x="558" y="6" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement key="line" x="367" y="6" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement key="line" x="237" y="6" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement key="line" x="81" y="6" width="1" height="42"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="139" y="6" width="1" height="42"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="13" y="12" width="62" height="30"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codsolvia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="13" width="92" height="24"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomper}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="241" y="13" width="124" height="24"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apeper}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="6"/>
+	</pageFooter>
+	<summary>
+		<band height="42">
+			<textField>
+				<reportElement x="731" y="7" width="64" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="677" y="6" width="54" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

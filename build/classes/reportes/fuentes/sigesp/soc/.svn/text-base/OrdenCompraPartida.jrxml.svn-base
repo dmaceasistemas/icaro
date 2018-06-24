@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="cuentades" class="java.lang.String"/>
+	<parameter name="cuentahas" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ( SELECT CASE
+	  WHEN oc.estcondat = 'B' THEN 'Bienes'
+	  WHEN oc.estcondat = 'S' THEN 'Servicios' 
+	  END) as Tipo, 
+	oc.numordcom, rd.numrecdoc, oc.obscom, oc.cod_pro, rpc.nompro, 
+       (cg.codestpro1 || cg.codestpro2 || cg.codestpro3 || cg.codestpro4 || 
+        cg.codestpro5) as programatica, cg.spg_cuenta, cg.monto, 
+        (SELECT CASE
+	WHEN oc.estcom  = 0 THEN 'Emitida'
+	WHEN oc.estcom  = 2 THEN 'Procesada / Contabilizada'
+	WHEN oc.estcom  = 3 THEN 'Anulada'
+	END) as Estatus
+ FROM soc_ordencompra oc 
+ JOIN rpc_proveedor rpc ON oc.cod_pro = rpc.cod_pro
+ JOIN soc_cuentagasto cg ON oc.numordcom = cg.numordcom 
+			 AND oc.estcondat = cg.estcondat 
+			 AND oc.codfuefin = cg.codfuefin 
+ JOIN cxp_rd_spg rd ON oc.numordcom = rd.numdoccom 
+                    AND oc.cod_pro = rd.cod_pro 
+                    AND (cg.codestpro1 || cg.codestpro2 || cg.codestpro3 || 
+                         cg.codestpro4 || cg.codestpro5) = rd.codestpro 
+                    AND cg.codfuefin = rd.codfuefin 
+                    AND cg.spg_cuenta = rd.spg_cuenta
+                    AND (rd.procede_doc = 'SOCCOS' OR rd.procede_doc = 'SOCCOC')                    
+ WHERE cg.spg_cuenta BETWEEN $P{cuentades} AND $P{cuentahas}   
+ ORDER BY 2,8]]>
+	</queryString>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numordcom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numrecdoc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="obscom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cod_pro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nompro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="programatica" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="spg_cuenta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estatus" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="74">
+			<line>
+				<reportElement x="16" y="11" width="768" height="1"/>
+			</line>
+			<line>
+				<reportElement x="17" y="63" width="768" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="30" y="21" width="739" height="35"/>
+				<textElement textAlignment="Center">
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[ORDENES DE COMPRA Y SERVICIOS POR PARTIDA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="16"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="133">
+			<rectangle>
+				<reportElement x="3" y="6" width="310" height="31"/>
+			</rectangle>
+			<line>
+				<reportElement x="137" y="6" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="18" y="12" width="109" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuenta desde:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="3" y="98" width="766" height="31"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="3" y="41" width="310" height="31"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="18" y="47" width="109" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuenta hasta:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="137" y="41" width="1" height="31"/>
+			</line>
+			<textField>
+				<reportElement x="150" y="12" width="151" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cuentades}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="47" width="151" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cuentahas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="9" y="105" width="79" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Orden]]></text>
+			</staticText>
+			<line>
+				<reportElement x="93" y="98" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="99" y="105" width="80" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Recepción]]></text>
+			</staticText>
+			<line>
+				<reportElement x="183" y="98" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="189" y="105" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Orden Compra]]></text>
+			</staticText>
+			<line>
+				<reportElement x="292" y="98" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="301" y="105" width="174" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción de la Orden]]></text>
+			</staticText>
+			<line>
+				<reportElement x="478" y="98" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="486" y="105" width="101" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<line>
+				<reportElement x="595" y="98" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="598" y="105" width="81" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuenta]]></text>
+			</staticText>
+			<line>
+				<reportElement x="684" y="98" width="1" height="31"/>
+			</line>
+			<staticText>
+				<reportElement x="698" y="105" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="101">
+			<rectangle>
+				<reportElement x="3" y="5" width="766" height="86"/>
+			</rectangle>
+			<line>
+				<reportElement x="94" y="5" width="1" height="86"/>
+			</line>
+			<line>
+				<reportElement x="184" y="5" width="1" height="86"/>
+			</line>
+			<line>
+				<reportElement x="293" y="5" width="1" height="86"/>
+			</line>
+			<line>
+				<reportElement x="479" y="5" width="1" height="86"/>
+			</line>
+			<line>
+				<reportElement x="594" y="5" width="1" height="86"/>
+			</line>
+			<line>
+				<reportElement x="683" y="5" width="1" height="86"/>
+			</line>
+			<textField>
+				<reportElement x="9" y="6" width="79" height="83"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="8" width="80" height="81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numrecdoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="8" width="97" height="81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numordcom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="296" y="8" width="181" height="81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{obscom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="484" y="8" width="103" height="81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nompro}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="598" y="8" width="81" height="81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{spg_cuenta}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="693" y="8" width="68" height="81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="6"/>
+	</pageFooter>
+	<summary>
+		<band height="42">
+			<rectangle>
+				<reportElement x="607" y="6" width="162" height="25"/>
+			</rectangle>
+			<line>
+				<reportElement x="684" y="6" width="1" height="25"/>
+			</line>
+			<staticText>
+				<reportElement x="610" y="8" width="71" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="686" y="8" width="81" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

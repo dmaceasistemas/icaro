@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_registrotransito" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="nroregistro" class="java.lang.String"/>
+	<parameter name="imganulado" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/imedina/workspace3/icaro/src/reportes/fuentes/sigesp/imp/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+       sigesp_espc.imp_nacionalizacion.str_nrocontrol, 
+       sigesp_espc.imp_nacionalizacion.tmwtz_fecharegistro, 
+       sigesp_espc.imp_nacionalizacion.str_nrodua, 
+       sigesp_espc.imp_recepcion.tmwtz_fecharegistro,
+       sigesp_espc.imp_recepcion.tmwtz_fecharecepcion,
+       sigesp_espc.imp_recepcion.str_nrocontrol AS nro_recepcion,
+       sigesp_espc.imp_recepcion.str_localidadrecepcion,
+       usuariorecepcion.nomusu || ' ' || usuariorecepcion.apeusu AS usuarioregistrarec,
+       usuarionacionalizacion.codusu,
+       usuarionacionalizacion.nomusu || ' ' || usuarionacionalizacion.apeusu AS usuarioregistranac,
+       public.siv_articulo.codart,
+       public.siv_articulo.denart,
+       sigesp_espc.imp_articulosnacionalizados.seq_bs_idartinacio,
+       sigesp_espc.imp_articulosnacionalizados.str_codemp, 
+       sigesp_espc.imp_articulosnacionalizados.str_codart, 
+       sigesp_espc.imp_articulosnacionalizados.dec_cantidad,
+       sigesp_espc.imp_estadonacionalizacion.str_estado,
+       sigesp_espc.imp_nacionalizacion.str_observacion 
+  FROM sigesp_espc.imp_articulosnacionalizados
+  JOIN sigesp_espc.imp_nacionalizacion ON sigesp_espc.imp_nacionalizacion.seq_ser_idnacionalizacion = sigesp_espc.imp_articulosnacionalizados.int_idnacionalizacion
+  JOIN sigesp_espc.imp_recepcion ON  sigesp_espc.imp_recepcion.seq_ser_idrecepcion = sigesp_espc.imp_nacionalizacion.int_idrecepcion
+				 AND sigesp_espc.imp_nacionalizacion.seq_ser_idnacionalizacion = sigesp_espc.imp_articulosnacionalizados.int_idnacionalizacion
+
+  JOIN public.sss_usuarios AS usuariorecepcion ON usuariorecepcion.codemp =  sigesp_espc.imp_recepcion.str_codemp 
+			 AND usuariorecepcion.codusu = sigesp_espc.imp_recepcion.str_codusu
+			 AND sigesp_espc.imp_recepcion.seq_ser_idrecepcion = sigesp_espc.imp_nacionalizacion.int_idrecepcion
+			 AND sigesp_espc.imp_nacionalizacion.seq_ser_idnacionalizacion = sigesp_espc.imp_articulosnacionalizados.int_idnacionalizacion 
+  JOIN sigesp_espc.imp_estadonacionalizacion ON sigesp_espc.imp_estadonacionalizacion.seq_ser_idestado = sigesp_espc.imp_nacionalizacion.int_idestadonacionalizacion
+			               AND sigesp_espc.imp_nacionalizacion.seq_ser_idnacionalizacion = sigesp_espc.imp_articulosnacionalizados.int_idnacionalizacion
+  JOIN public.sss_usuarios as usuarionacionalizacion ON usuarionacionalizacion.codemp =  sigesp_espc.imp_nacionalizacion.str_codemp 
+			 AND usuarionacionalizacion.codusu = sigesp_espc.imp_nacionalizacion.str_codusu			 
+			 AND sigesp_espc.imp_nacionalizacion.seq_ser_idnacionalizacion = sigesp_espc.imp_articulosnacionalizados.int_idnacionalizacion  			                
+  JOIN public.siv_articulo ON public.siv_articulo.codemp = sigesp_espc.imp_articulosnacionalizados.str_codemp
+			   AND public.siv_articulo.codart = sigesp_espc.imp_articulosnacionalizados.str_codart
+			   
+WHERE  sigesp_espc.imp_nacionalizacion.str_nrocontrol= $P{nroregistro}]]>
+	</queryString>
+	<field name="str_nrocontrol" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tmwtz_fecharegistro" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_nrodua" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tmwtz_fecharecepcion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nro_recepcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_localidadrecepcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuarioregistrarec" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codusu" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuarioregistranac" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codart" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="denart" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="seq_bs_idartinacio" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_codemp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_codart" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dec_cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_observacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="nrocontrol">
+		<groupExpression><![CDATA[$F{str_nrocontrol}]]></groupExpression>
+		<groupHeader>
+			<band>
+				<textField pattern="">
+					<reportElement x="261" y="-270" width="292" height="15"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[" Nro Control : "+$F{str_nrocontrol}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="156" y="-32" width="239" height="14"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Detalles de Nacionalizacion]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="1">
+				<line>
+					<reportElement x="0" y="0" width="555" height="1" forecolor="#919191"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band height="802">
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="15" width="555" height="761"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{imganulado}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="239">
+			<staticText>
+				<reportElement x="3" y="113" width="97" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Registro : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="164" width="101" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="1" y="141" width="554" height="97" forecolor="#919191"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="98" width="97" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro DUA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="178" width="101" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Localidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="220" width="101" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Registrado por]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="1" y="77" width="555" height="49" forecolor="#919191"/>
+			</rectangle>
+			<textField>
+				<reportElement x="111" y="178" width="259" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_localidadrecepcion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="158" width="554" height="1" forecolor="#919191"/>
+			</line>
+			<textField>
+				<reportElement x="101" y="98" width="213" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nrodua}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="95" width="555" height="1" forecolor="#919191"/>
+			</line>
+			<staticText>
+				<reportElement x="5" y="206" width="101" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Recepcion ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="111" y="192" width="259" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{tmwtz_fecharegistro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="101" y="113" width="213" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{tmwtz_fecharegistro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="164" width="259" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nro_recepcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="111" y="220" width="259" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{usuarioregistrarec}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="81" width="154" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de Nacionalizacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="192" width="101" height="13"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Registro]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="111" y="206" width="259" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{tmwtz_fecharecepcion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="143" width="133" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de Recepcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="54" width="304" height="19"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO DE NACIONALIZACION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="57" y="28" width="168" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF G200079100]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" x="57" y="0" width="168" height="29"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO S.A.]]></text>
+			</staticText>
+			<image>
+				<reportElement key="image" x="0" y="0" width="57" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="261" y="20" width="291" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34">
+			<rectangle>
+				<reportElement x="0" y="17" width="555" height="17" forecolor="#919191" backcolor="#CAC8C8"/>
+			</rectangle>
+			<line>
+				<reportElement x="342" y="17" width="1" height="17" forecolor="#919191"/>
+			</line>
+			<staticText>
+				<reportElement x="105" y="19" width="144" height="12"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ITEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="19" width="85" height="12"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="95" y="17" width="1" height="17" forecolor="#919191"/>
+			</line>
+			<staticText>
+				<reportElement x="350" y="19" width="144" height="12"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERIE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="15" forecolor="#919191" backcolor="#FEFEFE"/>
+			</rectangle>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="97" y="1" width="232" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{denart}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="343" y="1" width="210" height="14"/>
+				<subreportParameter name="idartnac">
+					<subreportParameterExpression><![CDATA[$F{seq_bs_idartinacio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "serienacionalizado.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="6" y="1" width="87" height="12"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codart}.trim()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToTallestObject" x="342" y="0" width="1" height="15" forecolor="#919191"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToTallestObject" x="95" y="0" width="1" height="15" forecolor="#919191"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="38">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="343" y="27" width="170" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pag " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="517" y="27" width="36" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="343" y="13" width="210" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nrocontrol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="14" width="209" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Impreso por "+ $P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="2" y="27" width="209" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="1" width="313" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Creado por "+ $F{usuarioregistranac} + " ["+$F{codusu}.trim()+"]"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="84">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="3" width="100" height="10"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observación]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="15" width="554" height="65" forecolor="#919191"/>
+			</rectangle>
+			<textField>
+				<reportElement x="6" y="17" width="546" height="60"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_observacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

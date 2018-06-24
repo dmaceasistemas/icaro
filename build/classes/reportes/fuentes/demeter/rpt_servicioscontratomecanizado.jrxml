@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Serviciosaprestar" language="groovy" pageWidth="612" pageHeight="907" columnWidth="485" leftMargin="85" rightMargin="42" topMargin="127" bottomMargin="51">
+	<property name="ireport.zoom" value="1.3310000000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="379"/>
+	<parameter name="NumeroContrato" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+
+to_char(tbl_dem_contrato."dtm_fecha", 'dd-mm-yyyy') AS contratodtm_fecha,
+to_char(tbl_dem_contrato."dtm_fechadesde",'dd-mm-yyyy') AS contratofechadesde,
+
+rpad(tbl_dem_contrato."int_diasvigencia",6,'_')AS contratodiasvigencia,
+rpad(trunc(tbl_dem_contrato.dbl_monto,2),16,'_')AS contratomonto,
+rpad(fu_numero_letras(tbl_dem_contrato.dbl_monto),100,'_')AS letrasmonto,
+
+tbl_dem_contrato."str_serie" AS contratostr_serie,
+
+tbl_dem_clientes."str_nombre" as nombrepagador,
+tbl_dem_clientes."str_cedurif" AS cedurifpagador,
+tbl_dem_contrato."int_nrocontrol" AS contrato_nrocontrol,
+
+
+
+tbl_dem_control_sede."str_abogado" AS abogado,
+tbl_dem_control_sede."str_impreabogado" AS impreabogado,
+rpad(tbl_dem_control_sede."str_direccionsede",160,'_') AS direccionsede,
+tbl_dem_control_sede."str_coordinadorsede" AS coordinadorsede,
+rpad(tbl_dem_control_sede."str_sede",50,'_')AS str_sede,
+rpad(tbl_dem_control_sede."str_codemp",50,'_')AS str_codemp,
+
+productor."str_nombre" as nombreproductor,
+productor."str_cedurif"AS cedurifproductor,
+
+tbl_dem_control_sede."str_cedulacoordinadorsede" AS cedulacoordinadorsede,
+
+estadosproduccion."desest" AS estadoproduccion,
+municipioproduccion."denmun" AS municipioproduccion,
+parroquiaproduccion."denpar" AS parroquiaproduccion,
+direccionproduccion."str_infadicional" AS direccionproduccion,
+direccionproduccion."str_ptoreferencia" AS direccionptoreferenciaproduccion,
+direccionproduccion."str_sector" AS direccionsectorproduccion,
+
+administracion.tbl_dem_detallecontrato.int_idservicio as servicio,
+administracion.tbl_dem_detallecontrato.dbl_cantidad as cantidad,
+administracion.tbl_dem_detallecontrato. dbl_preciounidad as preciounidad,
+administracion.tbl_dem_detallecontrato.int_idumedidacobro as medidacobro,
+administracion.tbl_dem_detallecontrato.dbl_subtotal as subtotal,
+public.tbl_dem_servicios.str_nomserv,
+public.tbl_dem_servicios_prestar.str_formula,
+public.tbl_dem_unidad_medidas.str_descripcion,
+public.tbl_dem_unidad_medidas.str_abreviatura
+FROM
+     "administracion"."tbl_dem_estado_contrato" tbl_dem_estado_contrato
+     INNER JOIN "administracion"."tbl_dem_contrato" tbl_dem_contrato ON tbl_dem_estado_contrato."seq_idestadocontrato" = tbl_dem_contrato."int_estado"
+     INNER JOIN "public"."tbl_dem_clientes" tbl_dem_clientes ON tbl_dem_contrato."int_idpagador" = tbl_dem_clientes."seq_idcliente"
+     INNER JOIN "administracion"."tbl_dem_plan_financiamiento" tbl_dem_plan_financiamiento ON tbl_dem_contrato."int_idplanfinanciamiento" = tbl_dem_plan_financiamiento."seq_idplanfinanciamiento"
+     INNER JOIN "administracion"."tbl_dem_tipocontrato" tbl_dem_tipocontrato ON tbl_dem_contrato."int_idtipocontrato" = tbl_dem_tipocontrato."seq_idtipocontrato"
+
+    INNER JOIN  gestion.tbl_dem_solicitud on gestion.tbl_dem_solicitud.seq_idsolicitud=tbl_dem_contrato.int_idsolicitud
+    INNER JOIN administracion.tbl_dem_control_sede on tbl_dem_control_sede.str_sede=tbl_dem_solicitud.int_idsede
+  INNER JOIN "public"."tbl_dem_clientes" productor ON gestion.tbl_dem_solicitud.int_idcliente= productor."seq_idcliente"
+
+INNER JOIN public.tbl_dem_direccion tbl_dem_direccion ON gestion.tbl_dem_solicitud.int_idcliente = tbl_dem_direccion."int_idcliente"
+    JOIN "sigesp"."sigesp_parroquia" sigesp_parroquia ON tbl_dem_direccion."str_codpais" = sigesp_parroquia."codpai"
+     AND sigesp_parroquia."codmun" = tbl_dem_direccion."str_codmun"
+     AND sigesp_parroquia."codpar" = tbl_dem_direccion."str_codpar"
+     AND sigesp_parroquia."codest" = tbl_dem_direccion."str_codest"
+     JOIN "sigesp"."sigesp_municipio" sigesp_municipio ON sigesp_parroquia."codpai" = sigesp_municipio."codpai"
+     AND sigesp_municipio."codmun" = sigesp_parroquia."codmun"
+     AND sigesp_municipio."codest" = sigesp_parroquia."codest"
+    JOIN "sigesp"."sigesp_municipio" sigesp_municipio_A ON sigesp_parroquia."codpai" = sigesp_municipio_A."codpai"
+     AND sigesp_municipio_A."codmun" = sigesp_parroquia."codmun"
+     AND sigesp_municipio_A."codest" = sigesp_parroquia."codest"
+    JOIN "sigesp"."sigesp_estados" sigesp_estados ON sigesp_municipio_A."codpai" = sigesp_estados."codpai"
+     AND sigesp_estados."codest" = sigesp_municipio_A."codest"
+     AND sigesp_estados."codpai" = sigesp_municipio."codpai"
+     AND sigesp_estados."codest" = sigesp_municipio."codest"
+
+    INNER JOIN public.tbl_dem_direccion direccionproduccion ON tbl_dem_contrato.int_iddireccion = direccionproduccion.seq_iddireccion
+        JOIN "sigesp"."sigesp_parroquia" parroquiaproduccion ON direccionproduccion."str_codpais" = sigesp_parroquia."codpai"
+     AND parroquiaproduccion."codmun" = direccionproduccion."str_codmun"
+     AND parroquiaproduccion."codpar" = direccionproduccion."str_codpar"
+     AND parroquiaproduccion."codest" = direccionproduccion."str_codest"
+     JOIN "sigesp"."sigesp_municipio" municipioproduccion ON parroquiaproduccion."codpai" = municipioproduccion."codpai"
+     AND municipioproduccion."codmun" = parroquiaproduccion."codmun"
+     AND municipioproduccion."codest" = parroquiaproduccion."codest"
+    JOIN "sigesp"."sigesp_municipio" municipioproduccionA ON parroquiaproduccion."codpai" = municipioproduccionA."codpai"
+     AND municipioproduccionA."codmun" = parroquiaproduccion."codmun"
+     AND municipioproduccionA."codest" = parroquiaproduccion."codest"
+    JOIN "sigesp"."sigesp_estados"  estadosproduccion ON municipioproduccionA."codpai" = estadosproduccion."codpai"
+     AND estadosproduccion."codest" = municipioproduccionA."codest"
+     AND estadosproduccion."codpai" = municipioproduccionA."codpai"
+     AND estadosproduccion."codest" = municipioproduccionA."codest"
+join administracion.tbl_dem_detallecontrato on administracion.tbl_dem_detallecontrato.int_idcontrato=tbl_dem_contrato.seq_idcontrato
+join public.tbl_dem_servicios on administracion.tbl_dem_detallecontrato.int_idservicio= public.tbl_dem_servicios.seq_idservicio
+join public.tbl_dem_servicios_prestar on administracion.tbl_dem_detallecontrato.int_idservicio = public.tbl_dem_servicios_prestar.int_idservicio
+join public.tbl_dem_unidad_medidas on   administracion.tbl_dem_detallecontrato.int_idumedidacobro=public.tbl_dem_unidad_medidas.seq_idumedida
+
+
+where tbl_dem_contrato.seq_idcontrato= $P{NumeroContrato}]]>
+	</queryString>
+	<field name="contratodtm_fecha" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contratofechadesde" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contratodiasvigencia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contratomonto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="letrasmonto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contratostr_serie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombrepagador" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedurifpagador" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contrato_nrocontrol" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="abogado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="impreabogado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccionsede" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="coordinadorsede" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_sede" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_codemp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreproductor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedurifproductor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedulacoordinadorsede" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estadoproduccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="municipioproduccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="parroquiaproduccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccionproduccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccionptoreferenciaproduccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccionsectorproduccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="servicio" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="preciounidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="medidacobro" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_nomserv" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_formula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_abreviatura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="247" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="112" width="472" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="URWGothicL" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Servicios Contratados"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="106" width="484" height="6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="135" width="484" height="6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="186" y="83" width="117" height="20"/>
+				<textElement>
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="63" width="452" height="20"/>
+				<textElement>
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="150" width="89" height="20"/>
+				<textElement>
+					<font fontName="URWGothicL" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Coodinador:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="170" width="89" height="20"/>
+				<textElement>
+					<font fontName="URWGothicL" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Productor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="188" width="149" height="20"/>
+				<textElement>
+					<font fontName="URWGothicL" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ubicacion Contratada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="227" width="142" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERVICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="142" y="227" width="125" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="267" y="227" width="109" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="376" y="227" width="109" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="91" y="150" width="394" height="20"/>
+				<textElement markup="html">
+					<font fontName="URWGothicL" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{coordinadorsede}+" <b>Cedula:</b> "+$F{cedulacoordinadorsede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="168" width="394" height="20"/>
+				<textElement markup="html">
+					<font fontName="URWGothicL" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombrepagador}+" <b>Cedula:</b> "+$F{cedurifpagador}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="152" y="190" width="333" height="33"/>
+				<textElement markup="html">
+					<font fontName="URWGothicL" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["<b> Estado:</b> "+$F{estadoproduccion}+" <b>Municipio:</b> "+$F{municipioproduccion}+" <b>Parroquia:</b> "+$F{parroquiaproduccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="7" width="186" height="56"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="html">
+					<font fontName="URWGothicL" size="13" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["<b><i>"+$F{abogado}+"</i></b><b><br>ABOGADO<br></b><b><i>"+$F{impreabogado}+"</i></b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="7" width="132" height="43"/>
+				<textElement>
+					<font fontName="URWGothicL" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{contratostr_serie}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="267" y="0" width="109" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{preciounidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="376" y="0" width="109" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="142" y="0" width="125" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cantidad}+" "+$F{str_abreviatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="142" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="URWGothicL" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nomserv}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="128" splitType="Stretch">
+			<staticText>
+				<reportElement x="29" y="28" width="205" height="92"/>
+				<textElement textAlignment="Center" lineSpacing="1_1_2" markup="html">
+					<font fontName="URWGothicL" size="13" isBold="true" pdfFontName="URW Gothic L Book"/>
+				</textElement>
+				<text><![CDATA[<b>CVA Compañía de Mecanizado Agrícola y Transporte Pedro Camejo, S.A.</b>]]></text>
+			</staticText>
+			<line>
+				<reportElement x="239" y="10" width="205" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="239" y="28" width="205" height="92"/>
+				<textElement textAlignment="Center" lineSpacing="1_1_2" markup="html">
+					<font fontName="URWGothicL" size="13" isBold="true" pdfFontName="URW Gothic L Book"/>
+				</textElement>
+				<text><![CDATA[<b>El Productor</b>]]></text>
+			</staticText>
+			<line>
+				<reportElement x="29" y="10" width="205" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

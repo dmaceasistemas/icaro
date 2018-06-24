@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ORDENFARMACIA"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="encabezado" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="logoCVA" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="logoCPC" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pie" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="nroOrden" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT ben.codigo_beneficiario as codben_ben, ben.nombre as nombre_ben, ben.parentesco, ben.cedula_empleado,
+	emp.cedula_empleado as cedula_emp, emp.nombre as nombre_emp, emp.condicion,
+	vint.telhabper as telhabemp_sigesp, vint.telmovper as tefmovemp_sigesp,
+	trat.id, trat.codigo, trat.codigo_farmacia, trat.fecha_emision, trat.fecha_vencimiento,
+	far.codigo_farmacia, far.estado, far.nombre as nombre_far, far.direccion,
+	ser.codigo_servicio, ser.nombre as nombre_ser,
+	dop.codigo_servicio, dop.numero_servicio, dop.numero_orden, dop.diagnostico,
+	op.numero_orden, op.codigo_medico,
+	cob.numero_cobertura, cob.cedula_empleado, cob.codigo_beneficiario as codben_cob,
+	med.codigo_medico, med.nombre as nombre_med, med.especialidad,
+	dmed.codigo_tratamiento, dmed.id_medicamento, dmed.cantidad, dmed.dosis, dmed.tiempo_tratamiento,
+	medicam.id_medicamento, medicam.nombre as nombre_medicamento, medicam.unidad_medida,
+	CASE ben.parentesco
+	  WHEN 'P' THEN 'Padre'
+	  WHEN 'M' THEN 'Madre'
+	  WHEN 'C' THEN 'Conyugue'
+	  WHEN 'H' THEN CASE ben.sexo
+			  WHEN 'F' THEN 'Hija'
+			  ELSE 'Hijo'
+			END
+	END AS parentesco_texto,
+	CASE emp.condicion
+	  WHEN 'E' THEN 'Empleado'
+	  ELSE 'Obrero'
+	END AS condicion_texto
+	FROM tbl_sas_cobertura cob
+	JOIN tbl_sas_ordenpago op USING (numero_cobertura)
+	JOIN tbl_sas_detalle_ordenpago dop ON dop.numero_orden = op.numero_orden
+	JOIN tbl_sas_servicio ser ON dop.codigo_servicio = ser.codigo_servicio
+	JOIN tbl_sas_servicio_tratamientopermanente trat ON dop.numero_servicio = trat.id
+	LEFT JOIN tbl_sas_beneficiario ben USING (codigo_beneficiario)
+	JOIN tbl_sas_empleado emp ON cob.cedula_empleado = emp.cedula_empleado
+	LEFT JOIN tbl_sas_medico med ON op.codigo_medico = med.codigo_medico
+	LEFT JOIN tbl_sas_farmacia far ON trat.codigo_farmacia = far.codigo_farmacia
+	CROSS JOIN tbl_sas_medicamento medicam
+	JOIN tbl_sas_detalle_medicamento dmed ON dmed.id_medicamento = medicam.id_medicamento
+	JOIN viw_apolo_sigesp_personal vint ON vint.cedper = cob.cedula_empleado
+	WHERE ser.nombre = 'TRATAMIENTO PERMANENTE'
+		AND trat.id = $P{nroOrden}::integer
+		AND trat.id = dmed.codigo_tratamiento]]></queryString>
+
+	<field name="codben_ben" class="java.lang.String"/>
+	<field name="nombre_ben" class="java.lang.String"/>
+	<field name="parentesco" class="java.lang.String"/>
+	<field name="cedula_empleado" class="java.lang.String"/>
+	<field name="cedula_emp" class="java.lang.String"/>
+	<field name="nombre_emp" class="java.lang.String"/>
+	<field name="condicion" class="java.lang.String"/>
+	<field name="telhabemp_sigesp" class="java.lang.String"/>
+	<field name="tefmovemp_sigesp" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="codigo_farmacia" class="java.lang.Integer"/>
+	<field name="fecha_emision" class="java.sql.Date"/>
+	<field name="fecha_vencimiento" class="java.sql.Date"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="nombre_far" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="codigo_servicio" class="java.lang.Integer"/>
+	<field name="nombre_ser" class="java.lang.String"/>
+	<field name="numero_servicio" class="java.lang.Integer"/>
+	<field name="numero_orden" class="java.lang.Integer"/>
+	<field name="diagnostico" class="java.lang.String"/>
+	<field name="codigo_medico" class="java.lang.Integer"/>
+	<field name="numero_cobertura" class="java.lang.Integer"/>
+	<field name="codben_cob" class="java.lang.String"/>
+	<field name="nombre_med" class="java.lang.String"/>
+	<field name="especialidad" class="java.lang.String"/>
+	<field name="codigo_tratamiento" class="java.lang.Integer"/>
+	<field name="id_medicamento" class="java.lang.Integer"/>
+	<field name="cantidad" class="java.lang.String"/>
+	<field name="dosis" class="java.lang.String"/>
+	<field name="tiempo_tratamiento" class="java.lang.String"/>
+	<field name="nombre_medicamento" class="java.lang.String"/>
+	<field name="unidad_medida" class="java.lang.String"/>
+	<field name="parentesco_texto" class="java.lang.String"/>
+	<field name="condicion_texto" class="java.lang.String"/>
+
+
+		<group  name="beneficiario" >
+			<groupExpression><![CDATA[$F{codben_ben}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="52"  isSplitAllowed="true" >
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="2"
+						width="535"
+						height="50"
+						key="image-1"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{encabezado}]]></imageExpression>
+				</image>
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="508"
+						y="0"
+						width="26"
+						height="33"
+						key="image-2"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logoCPC}]]></imageExpression>
+				</image>
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="478"
+						y="2"
+						width="30"
+						height="33"
+						key="image-3"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logoCVA}]]></imageExpression>
+				</image>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="306"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="2"
+						width="120"
+						height="9"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Corporación Venezolana Agraria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="47"
+						width="45"
+						height="12"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[N° Orden:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="1"
+						y="62"
+						width="113"
+						height="11"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[DATOS DEL TRABAJADOR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="102"
+						width="120"
+						height="11"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[DATOS DEL BENEFICIARIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="73"
+						width="113"
+						height="11"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Apellido(s) y Nombre(s):]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="113"
+						width="113"
+						height="11"
+						key="staticText-8"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Apellido(s) y Nombre(s):]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="58"
+						width="535"
+						height="1"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="100"
+						width="535"
+						height="1"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="200"
+						y="72"
+						width="91"
+						height="12"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Cédula de Identidad:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="200"
+						y="113"
+						width="91"
+						height="11"
+						key="staticText-10"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Cédula de Identidad:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="84"
+						width="197"
+						height="13"
+						key="textField-2"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre_emp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="124"
+						width="197"
+						height="13"
+						key="textField-3"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_ben} == null) ? $F{nombre_emp} : $F{nombre_ben}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="200"
+						y="84"
+						width="91"
+						height="13"
+						key="textField-4"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cedula_emp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="200"
+						y="123"
+						width="91"
+						height="13"
+						key="textField-5"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{codben_ben} == null) ? $F{cedula_emp} : $F{codben_ben}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="209"
+						y="46"
+						width="81"
+						height="12"
+						key="staticText-11"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Fecha de Emisión:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="402"
+						y="46"
+						width="30"
+						height="12"
+						key="staticText-12"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Vence:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="290"
+						y="47"
+						width="75"
+						height="12"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fecha_emision}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="127"
+						y="22"
+						width="281"
+						height="13"
+						key="staticText-13"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font isBold="false"/>
+					</textElement>
+				<text><![CDATA[Sistema Autogestionado de Salud]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="309"
+						y="72"
+						width="35"
+						height="12"
+						key="staticText-14"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Ext. Tlf:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="440"
+						y="72"
+						width="72"
+						height="12"
+						key="staticText-15"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Tipo de Nómina:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="309"
+						y="113"
+						width="91"
+						height="11"
+						key="staticText-16"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Parentesco:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="140"
+						width="535"
+						height="1"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="1"
+						y="142"
+						width="124"
+						height="12"
+						key="staticText-17"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Clínica o Centro Hospitalario:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="154"
+						width="197"
+						height="13"
+						key="textField-8"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_far} == null) ? "" : $F{nombre_far}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="1"
+						y="170"
+						width="124"
+						height="12"
+						key="staticText-19"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Médico Tratante:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="169"
+						width="535"
+						height="1"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="199"
+						y="170"
+						width="124"
+						height="12"
+						key="staticText-20"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Especialidad:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="197"
+						y="58"
+						width="1"
+						height="111"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="307"
+						y="58"
+						width="1"
+						height="111"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="439"
+						y="58"
+						width="1"
+						height="42"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="194"
+						width="535"
+						height="1"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="182"
+						width="197"
+						height="13"
+						key="textField-10"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_med} == null) ? "" : $F{nombre_med}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="199"
+						y="182"
+						width="197"
+						height="13"
+						key="textField-11"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{especialidad} == null) ? "" : $F{especialidad}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="309"
+						y="123"
+						width="91"
+						height="13"
+						key="textField-12"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{parentesco_texto} == null) ? "" : $F{parentesco_texto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="84"
+						width="91"
+						height="13"
+						key="textField-13"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{condicion_texto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="1"
+						y="197"
+						width="533"
+						height="11"
+						key="staticText-21"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Para uso del Médico]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="207"
+						width="535"
+						height="1"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="0"
+						y="215"
+						width="65"
+						height="12"
+						key="staticText-22"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Diagnóstico:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="227"
+						width="530"
+						height="50"
+						key="textField-14"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{diagnostico}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="45"
+						y="47"
+						width="101"
+						height="13"
+						key="textField-20"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="127"
+						y="2"
+						width="281"
+						height="21"
+						key="staticText-32"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Orden de Farmacia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="308"
+						y="141"
+						width="42"
+						height="12"
+						key="staticText-33"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Dirección:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="199"
+						y="142"
+						width="91"
+						height="12"
+						key="staticText-34"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Estado:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="199"
+						y="154"
+						width="91"
+						height="13"
+						key="textField-23"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{estado} == null) ? "" : $F{estado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="350"
+						y="142"
+						width="185"
+						height="27"
+						key="textField-24"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{direccion} == null) ? "" : $F{direccion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="432"
+						y="46"
+						width="75"
+						height="12"
+						key="textField-25"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fecha_vencimiento}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="197"
+						y="170"
+						width="1"
+						height="24"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="240"
+						width="535"
+						height="1"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="255"
+						width="535"
+						height="1"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="270"
+						width="535"
+						height="1"
+						key="line-52"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="285"
+						width="535"
+						height="1"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="344"
+						y="72"
+						width="72"
+						height="12"
+						key="textField-30"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{telhabemp_sigesp} == null) ? "" : $F{telhabemp_sigesp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="344"
+						y="86"
+						width="72"
+						height="12"
+						key="textField-31"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{tefmovemp_sigesp} == null) ? "" : $F{tefmovemp_sigesp}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="27"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="535"
+						height="1"
+						key="line-10"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="1"
+						y="7"
+						width="227"
+						height="12"
+						key="staticText-23"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Medicamentos]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="228"
+						y="1"
+						width="1"
+						height="26"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="233"
+						y="7"
+						width="45"
+						height="12"
+						key="staticText-24"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Cantidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="286"
+						y="2"
+						width="53"
+						height="23"
+						key="staticText-25"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Unidad de Medida]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="350"
+						y="7"
+						width="45"
+						height="12"
+						key="staticText-26"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Dosis]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="414"
+						y="6"
+						width="105"
+						height="12"
+						key="staticText-27"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Tiempo Tratamiento]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="24"
+						width="535"
+						height="1"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="282"
+						y="1"
+						width="1"
+						height="26"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="343"
+						y="1"
+						width="1"
+						height="26"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="402"
+						y="1"
+						width="1"
+						height="26"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="17"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="0"
+						width="220"
+						height="13"
+						key="textField-15"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre_medicamento}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="228"
+						y="-2"
+						width="1"
+						height="17"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="402"
+						y="-2"
+						width="1"
+						height="17"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="343"
+						y="-2"
+						width="1"
+						height="17"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="282"
+						y="-2"
+						width="1"
+						height="17"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="14"
+						width="535"
+						height="1"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="230"
+						y="-1"
+						width="49"
+						height="13"
+						key="textField-18"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cantidad}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="285"
+						y="-1"
+						width="54"
+						height="13"
+						key="textField-19"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{unidad_medida}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="346"
+						y="0"
+						width="54"
+						height="13"
+						key="textField-28"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{dosis}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="405"
+						y="-1"
+						width="129"
+						height="13"
+						key="textField-29"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{tiempo_tratamiento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="176"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="1"
+						y="3"
+						width="68"
+						height="12"
+						key="staticText-28"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Observaciones:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="92"
+						width="535"
+						height="1"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="119"
+						width="535"
+						height="1"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="94"
+						width="135"
+						height="12"
+						key="staticText-29"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Médico Tratante Sello y Firma:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="179"
+						y="93"
+						width="1"
+						height="26"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="180"
+						y="94"
+						width="135"
+						height="12"
+						key="staticText-30"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Firma del Paciente:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="359"
+						y="94"
+						width="135"
+						height="12"
+						key="staticText-31"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Nombre, C.I., Firma y Sello:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="358"
+						y="93"
+						width="1"
+						height="26"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="151"
+						width="532"
+						height="23"
+						key="image-4"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{pie}]]></imageExpression>
+				</image>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="1"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="69"
+						y="15"
+						width="466"
+						height="1"
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="30"
+						width="535"
+						height="1"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="45"
+						width="535"
+						height="1"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="60"
+						width="535"
+						height="1"
+						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="75"
+						width="535"
+						height="1"
+						key="line-49"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

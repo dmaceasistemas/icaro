@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+		<bean id="configsigesp-prueba" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	      
+	      <property name="driverClass" value="org.postgresql.Driver"></property>
+
+	        <property name="jdbcUrl" value="jdbc:postgresql://172.16.0.21:5432/db_cvapedrocamejo_2012"/>
+	      <property name="user" value="sigesp"/>
+	      <property name="password" value="adminsigesp"/>
+	       
+	     <!--  <property name="jdbcUrl" value="jdbc:postgresql://172.16.2.88:5432/db_cvapedrocamejo_2012_est"/>
+	       <property name="user" value="sigesp_sa"/>
+	      <property name="password" value="51g35p@54"/>   -->    
+	      
+	      <property name="initialPoolSize" value="3"></property>
+	      <property name="minPoolSize" value="1"></property>
+	      <property name="maxPoolSize" value="50"/>
+	      <property name="checkoutTimeout" value="1000"/> <!-- Wartezeit auf freie Pool-Connection -->
+	      <property name="maxStatements" value="50"></property>
+	      <property name="automaticTestTable" value="C3P0_TEST_TABLE"></property>
+	      <property name="testConnectionOnCheckin" value="true"></property>
+	      <property name="idleConnectionTestPeriod" value="60"></property> <!-- in Sekunden -->
+	      <property name="acquireIncrement" value="1"/>
+      </bean>     
+      
+      		
+	</beans>
+

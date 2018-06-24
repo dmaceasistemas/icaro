@@ -1,0 +1,10 @@
+
+* {margin:0;padding:0}
+body {padding: 0 0 500px;background:white ;color:#333;font:83%/1.5 arial,tahoma,verdana,sans-serifz; }
+#encabezado {background: #666 url("images/sprites.png") repeat-x 0 100%;margin: 0 0;padding: 0 0 8px;margin:0px 0px;  }
+#nombre-aplicacion {font: 265% arial;letter-spacing: -.05em;margin:0 0 0 25px;padding:3px 0;color:#ccc;border:none}
+#content{text-align:center}
+#footer {text-align:center; background: #666 url("images/sprites.png") repeat-x 0 150%; clear:both;border-top: 1px solid #E3E8EE;padding: 5px;font-size:100%;color:#999 }
+#footer p {margin:0}
+#footer a:link {color:#999}
+

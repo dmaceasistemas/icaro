@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Serviciosaprestar" language="groovy" pageWidth="612" pageHeight="907" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.3310000000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="NumeroContrato" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+administracion.tbl_dem_detallecontrato.seq_iddetalle ,
+administracion.tbl_dem_detallecontrato.int_idcontrato,
+administracion.tbl_dem_detallecontrato.dbl_cantidad as cantidad,
+administracion.tbl_dem_detallecontrato.dbl_preciounidad as preciounidad,
+administracion.tbl_dem_detallecontrato.dbl_subtotal as subtotal,
+public.tbl_dem_unidad_medidas.str_descripcion as unidaddescripcion,
+public.tbl_dem_unidad_medidas.str_abreviatura as unidadabreviada,
+public.tbl_dem_unidad_medidas.bol_compuesto as unidadcompuesta,
+basico.tbl_dem_producto.str_descripcion as STR_NOMSERV,
+unidad_medidas.str_descripcion,
+unidad_medidas.str_abreviatura
+
+
+FROM administracion.tbl_dem_detallecontrato
+LEFT JOIN public.tbl_dem_unidad_medidas on public.tbl_dem_unidad_medidas.int_idtipounidadmedida=administracion.tbl_dem_detallecontrato.int_idumedidacobro
+LEFT JOIN basico.tbl_dem_producto on basico.tbl_dem_producto.seq_idproducto=administracion.tbl_dem_detallecontrato.int_idproducto
+LEFT JOIN public.tbl_dem_unidad_medidas  unidad_medidas ON unidad_medidas.seq_idumedida =  administracion.tbl_dem_detallecontrato.int_idumedidacobro
+WHERE administracion.tbl_dem_detallecontrato.int_idcontrato =$P{NumeroContrato}]]>
+	</queryString>
+	<field name="seq_iddetalle" class="java.lang.Long"/>
+	<field name="int_idcontrato" class="java.lang.Integer"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="preciounidad" class="java.math.BigDecimal"/>
+	<field name="subtotal" class="java.math.BigDecimal"/>
+	<field name="unidaddescripcion" class="java.lang.String"/>
+	<field name="unidadabreviada" class="java.lang.String"/>
+	<field name="unidadcompuesta" class="java.lang.Boolean"/>
+	<field name="str_nomserv" class="java.lang.String"/>
+	<field name="str_descripcion" class="java.lang.String"/>
+	<field name="str_abreviatura" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="1" y="17" width="484" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Dialog" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Servicios Contratados"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="376" y="46" width="109" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="267" y="46" width="109" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="142" y="46" width="125" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="46" width="142" height="20" backcolor="#E4E8AB"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERVICIO]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="267" y="0" width="109" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{preciounidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="376" y="0" width="109" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="142" y="0" width="125" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cantidad}+" "+$F{str_abreviatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="142" height="25"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nomserv}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

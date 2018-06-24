@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="disponibilidad" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="cod1" class="java.lang.String"/>
+	<parameter name="cod2" class="java.lang.String"/>
+	<parameter name="cod3" class="java.lang.String"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="codff" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT concepto, cod1,cod2, cod3, cod4, cod5,
+		codff, denff, codcuenta, dencuenta,
+		sum(((asignado+aumento)-disminucion)-comprometido) AS disponibilidad
+FROM  viw_public_sigesp_mayor_analitico
+WHERE  	fecha<=$P{fecha}::date AND	
+        	CAST(cod1  AS CHAR(20)) LIKE  $P{cod1} AND
+	CAST(cod2  AS CHAR(6)) LIKE  $P{cod2} AND
+	CAST(cod3  AS CHAR(3)) LIKE  $P{cod3} AND 
+	CAST(codff  AS CHAR(2)) LIKE $P{codff} AND
+	CAST(denff  AS CHAR(80)) <> ('NINGUNA')
+GROUP BY concepto, cod1,cod2, cod3, cod4, cod5,  codff, denff, codcuenta, dencuenta
+ORDER BY codcuenta]]>
+	</queryString>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="cod1" class="java.lang.String"/>
+	<field name="cod2" class="java.lang.String"/>
+	<field name="cod3" class="java.lang.String"/>
+	<field name="cod4" class="java.lang.String"/>
+	<field name="cod5" class="java.lang.String"/>
+	<field name="codff" class="java.lang.String"/>
+	<field name="denff" class="java.lang.String"/>
+	<field name="codcuenta" class="java.lang.String"/>
+	<field name="dencuenta" class="java.lang.String"/>
+	<field name="disponibilidad" class="java.lang.Double"/>
+	<variable name="contarProyectos" class="java.lang.Integer" incrementType="Group" incrementGroup="proyecto" calculation="Count">
+		<variableExpression><![CDATA[$F{concepto}]]></variableExpression>
+	</variable>
+	<variable name="totaldisponibilidad" class="java.lang.Double" resetType="Group" resetGroup="fuentefinanciamiento" calculation="Sum">
+		<variableExpression><![CDATA[$F{disponibilidad}]]></variableExpression>
+	</variable>
+	<variable name="mostrarfecha" class="java.lang.String" incrementType="Report">
+		<variableExpression><![CDATA[$P{fecha}.substring( 8, 10 )+"-"+$P{fecha}.substring( 5, 7 )+"-"+$P{fecha}.substring( 0, 4 )]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{fecha}.substring( 8, 10 )+"-"+$P{fecha}.substring( 5, 7 )+"-"+$P{fecha}.substring( 0, 4 )]]></initialValueExpression>
+	</variable>
+	<group name="proyecto">
+		<groupExpression><![CDATA[$F{concepto}]]></groupExpression>
+		<groupHeader>
+			<band height="26">
+				<rectangle radius="10">
+					<reportElement key="rectangle-1" x="0" y="1" width="552" height="23" backcolor="#DAD5D5"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="303" y="4" width="246" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{concepto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-1" x="7" y="6" width="76" height="19"/>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[PROYECTO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-1" x="83" y="3" width="210" height="19"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cod1}+"-"+$F{cod2}+"-"+$F{cod3}+"-"+$F{cod4}+"-"+$F{cod5}+" : "]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="7">
+				<break>
+					<reportElement key="element-85" x="0" y="4" width="552" height="1"/>
+				</break>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="fuentefinanciamiento">
+		<groupExpression><![CDATA[$F{denff}]]></groupExpression>
+		<groupHeader>
+			<band height="44">
+				<rectangle radius="10">
+					<reportElement key="rectangle-1" x="2" y="1" width="549" height="23" backcolor="#F4F0F0"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="196" y="4" width="350" height="18"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[" - "+$F{denff}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-2" x="7" y="5" width="164" height="20"/>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Fuente de Financiamiento:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-3" x="45" y="27" width="98" height="15"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CODIGO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-4" x="143" y="27" width="253" height="15"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[DENOMINACION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-5" x="396" y="27" width="109" height="15"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[DISPONIBILIDAD]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="171" y="6" width="25" height="20"/>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{codff}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="29">
+				<rectangle radius="10">
+					<reportElement key="rectangle-2" x="35" y="2" width="482" height="23" backcolor="#F4F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-6" x="46" y="3" width="336" height="23"/>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total Disponibilidad Fuente de Financiamiento:]]></text>
+				</staticText>
+				<textField pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="382" y="4" width="135" height="21"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{totaldisponibilidad}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31">
+			<staticText>
+				<reportElement key="staticText-7" x="0" y="4" width="338" height="22"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DISPONIBILIDAD PRESUPUESTARIA A LA FECHA:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="348" y="4" width="201" height="22"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{mostrarfecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="143" y="0" width="253" height="18"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dencuenta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="45" y="0" width="98" height="18"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codcuenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="396" y="0" width="109" height="18"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{disponibilidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="425" y="2" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField" x="505" y="2" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

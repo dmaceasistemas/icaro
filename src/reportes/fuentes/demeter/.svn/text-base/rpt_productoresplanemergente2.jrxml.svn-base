@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="productoresplanemergente" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     tbl_dem_plan."dtm_desde" AS tbl_dem_plan_dtm_desde,
+     tbl_dem_plan."dtm_hasta" AS tbl_dem_plan_dtm_hasta,
+     tbl_dem_plan."str_nombre" AS tbl_dem_plan_str_nombre,
+     tbl_dem_tipo_clientes."str_descripcion" AS tbl_dem_tipo_clientes_str_descripcion,
+     tbl_dem_clientes."str_cedurif" AS tbl_dem_clientes_str_cedurif,
+     tbl_dem_clientes."str_nombre" AS tbl_dem_clientes_str_nombre,
+     tbl_dem_telefono."str_numtel" AS tbl_dem_telefono_str_numtel
+FROM
+     "public"."tbl_dem_plan" tbl_dem_plan INNER JOIN "public"."tbl_dem_plan_rubro_sede" tbl_dem_plan_rubro_sede ON tbl_dem_plan."seq_idplan" = tbl_dem_plan_rubro_sede."int_idplan"
+
+     INNER JOIN "public"."tbl_dem_plan_cliente" tbl_dem_plan_cliente ON tbl_dem_plan."seq_idplan" = tbl_dem_plan_cliente."int_idplan"
+     INNER JOIN "public"."tbl_dem_clientes" tbl_dem_clientes ON tbl_dem_plan_cliente."int_idcliente" = tbl_dem_clientes."seq_idcliente"
+     INNER JOIN "public"."tbl_dem_tipo_clientes" tbl_dem_tipo_clientes ON tbl_dem_clientes."int_tipocliente" = tbl_dem_tipo_clientes."seq_idtipocliente"
+     left JOIN "public"."tbl_dem_telefono" tbl_dem_telefono ON tbl_dem_clientes."seq_idcliente" = tbl_dem_telefono."int_idcliente"
+
+GROUP BY
+     tbl_dem_plan."dtm_desde",
+     tbl_dem_plan."dtm_hasta",
+     tbl_dem_plan."str_nombre",
+     tbl_dem_tipo_clientes."str_descripcion",
+     tbl_dem_clientes."str_cedurif",
+     tbl_dem_clientes."str_nombre",
+     tbl_dem_telefono."str_numtel"]]>
+	</queryString>
+	<field name="tbl_dem_plan_dtm_desde" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_plan_dtm_hasta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_plan_str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_tipo_clientes_str_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_cedurif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_clientes_str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tbl_dem_telefono_str_numtel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="93" splitType="Stretch">
+			<staticText>
+				<reportElement x="97" y="53" width="413" height="32"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<text><![CDATA[Direcciòn Fiscal: Av. Libertador entre calles 38 y 39 Edif. CVA piso PB Ofic. Central Zona Industrial 1 Barquisimeto Estado Lara Telef: (0251)237.40.26]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="13" width="378" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="33" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="460" y="13" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<rectangle>
+				<reportElement x="22" y="15" width="488" height="6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="22" y="21" width="488" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Productores por Plan Emergente" +" "+$F{tbl_dem_plan_str_nombre}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="22" y="41" width="488" height="6"/>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="118" splitType="Stretch">
+			<textField>
+				<reportElement x="143" y="9" width="267" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_plan_str_nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="233" y="29" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_plan_dtm_hasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="43" y="9" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plan:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="29" width="13" height="20"/>
+				<textElement/>
+				<text><![CDATA[//]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="29" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="143" y="29" width="76" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_plan_dtm_hasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="93" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="93" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI/RIF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="133" y="93" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="133" y="69" width="122" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Productores Asociados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="93" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefono]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="133" y="3" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_clientes_str_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="3" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_tipo_clientes_str_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="3" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_clientes_str_cedurif}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="394" y="3" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tbl_dem_telefono_str_numtel}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

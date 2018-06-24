@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitudCotizacion" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="numsolicitud" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT *
+FROM viw_solicitud_cotizacion
+WHERE numsolcot =$P{numsolicitud}]]>
+	</queryString>
+	<field name="codemp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numsolcot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecsol" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipsolcot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consolcot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cod_pro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codart" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nompro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dirpro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telpro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rifpro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="denart" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codcatccnu" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="denunimed" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="canart" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="proveedor">
+		<groupExpression><![CDATA[$F{cod_pro}]]></groupExpression>
+		<groupHeader>
+			<band height="117">
+				<staticText>
+					<reportElement key="staticText-6" x="0" y="100" width="96" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CODIGO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-7" x="96" y="100" width="288" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[DENOMINACION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-9" x="384" y="100" width="75" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[UNIDAD]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-5" x="0" y="27" width="439" height="19"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Nombre o razon Social: "+$F{nompro}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-7" x="0" y="45" width="552" height="19"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Direccion: "+$F{dirpro}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-8" x="0" y="63" width="275" height="19"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Telefono: "+$F{telpro}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-5" x="0" y="82" width="552" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DETALLES DE LOS MATERIALES, SUMINISTROS O SERVICIOS REQUERIDOS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-14" x="459" y="100" width="93" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CANTIDAD]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-1" x="0" y="98" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-2" x="0" y="114" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-3" x="0" y="99" width="1" height="16"/>
+				</line>
+				<line>
+					<reportElement key="line-4" x="95" y="98" width="1" height="16"/>
+				</line>
+				<line>
+					<reportElement key="line-5" x="383" y="98" width="1" height="16"/>
+				</line>
+				<line>
+					<reportElement key="line-6" x="459" y="99" width="1" height="16"/>
+				</line>
+				<line>
+					<reportElement key="line-7" x="551" y="99" width="1" height="16"/>
+				</line>
+				<line>
+					<reportElement key="line-16" x="0" y="46" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-17" x="0" y="63" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="0" y="80" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-19" x="0" y="27" width="1" height="54"/>
+				</line>
+				<line>
+					<reportElement key="line-20" x="551" y="27" width="1" height="54"/>
+				</line>
+				<line>
+					<reportElement key="line-21" x="439" y="27" width="1" height="19"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="398" y="64" width="1" height="16"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-4" x="3" y="12" width="552" height="15"/>
+					<textElement textAlignment="Center">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[DATOS DEL PROVEEDOR]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-15" x="0" y="26" width="552" height="1"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-19" x="398" y="64" width="41" height="16"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Correo-E:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="439" y="64" width="112" height="16"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-20" x="439" y="27" width="42" height="19"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[RIF:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="481" y="27" width="71" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{rifpro}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="111">
+				<break>
+					<reportElement key="element-361" x="0" y="107" width="552" height="1"/>
+				</break>
+				<staticText>
+					<reportElement key="staticText-10" x="3" y="14" width="52" height="38"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[NOTA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-11" x="55" y="9" width="443" height="48"/>
+					<textElement textAlignment="Justified">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[LA COTIZACION DEBE PRESENTARSE A NOMBRE DE: CVA CIA DE MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO, S.A, No. RIF: G-20007910-0. INDICAR EN COTIZACION CONDICIONES DE COMPRA Y/O SERVICIOS: TIEMPO DE ENTREGA, Y/O EJECUCION, LUGAR DE ENTREGA, CONDICIONES DE PAGO Y GARANTIAS. SE EVALUARA LAS CONDICIONES ANTES MENCIONADAS.
+TIEMPO DE ESPERA DE LA OFERTA 3 DIAS HABILES.]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-1" x="4" y="55" width="273" height="30"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-12" x="4" y="86" width="273" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ELABORADO POR]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-2" x="276" y="55" width="275" height="30"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-13" x="276" y="86" width="273" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[RECIBIDO POR]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="163">
+			<staticText>
+				<reportElement key="staticText-1" x="76" y="0" width="476" height="62"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REPUBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA AGRICULTURA Y TIERRAS
+CVA CIA DE MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO, S.A
+RIF: G-20007910-0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="76" y="54" width="476" height="44"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AV INTERCOMUNAL BARQUISIMETO-CABUDARE SECTOR CARABALI, EDIF. CVA PLANTA BAJA, ZONA POSTAL 3023, BARQUISIMETO EDO LARA
+Correo-e: compraspedrocamejo@hotmail.com / compraspedrocamejo@gmail.com
+Tlfs.: +58 (251) 253.25.81. Fax: +58 (251) 253.24.44.  http://www.cvapedrocamejo.gob.ve]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="3" y="97" width="395" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE OFERTA]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="4" y="130" width="395" height="33"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Concepto: "+$F{consolcot}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-15" x="398" y="97" width="41" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="398" y="113" width="41" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha.:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="439" y="97" width="108" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numsolcot}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="439" y="113" width="110" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecsol}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-17" x="398" y="129" width="41" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="439" y="129" width="108" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[BIENES]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-8" x="0" y="95" width="552" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-9" x="0" y="129" width="552" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-10" x="0" y="162" width="552" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="0" y="95" width="1" height="67"/>
+			</line>
+			<line>
+				<reportElement key="line-12" x="398" y="95" width="1" height="67"/>
+			</line>
+			<line>
+				<reportElement key="line-13" x="440" y="95" width="1" height="67"/>
+			</line>
+			<line>
+				<reportElement key="line-14" x="551" y="95" width="1" height="67"/>
+			</line>
+			<line>
+				<reportElement key="line-29" x="398" y="112" width="154" height="1"/>
+			</line>
+			<image>
+				<reportElement key="image" x="1" y="10" width="75" height="63"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="24">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="96" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codart}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="142" y="-3" width="240" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{denart}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="460" y="0" width="90" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{canart}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-23" x="0" y="18" width="552" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-24" x="0" y="-3" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement key="line-25" x="95" y="-3" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement key="line-26" x="383" y="-2" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement key="line-27" x="459" y="-3" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement key="line-28" x="551" y="1" width="1" height="17"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="382" y="-1" width="75" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{denunimed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="1" width="46" height="16"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codcatccnu}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="432" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField" x="512" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

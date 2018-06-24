@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clientecomite" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="215"/>
+	<queryString>
+		<![CDATA[SELECT
+  tbl_dem_clientes.str_nombre,
+  tbl_dem_clientes.str_cedurif,
+  tbl_dem_clientes.str_email,
+  tbl_dem_tipo_clientes.str_descripcion as tipocliente,
+  tbl_dem_comite_mecanizacion.str_descripcion as nombreconsejomecanisado,
+  tbl_dem_comite_mecanizacion.int_idconsejo,
+  tbl_dem_tipo_consejos.str_descripcion as tipoconsejo,
+  tbl_dem_consejos_comunales.str_descripcion as consejocomunal,
+
+  voceroprin.str_nombre as  voceroprin,
+vocerosec.str_nombre as vocerosec,
+sum (tbl_dem_documentofiscal.dbl_saldo) as saldodeudor
+
+FROM
+  public.tbl_dem_comite_mecanizacion join   public.tbl_dem_cliente_comite on  tbl_dem_comite_mecanizacion.seq_idcomite = tbl_dem_cliente_comite.int_idcomite
+ join  public.tbl_dem_clientes on  tbl_dem_cliente_comite.int_idcliente = tbl_dem_clientes.seq_idcliente
+ left join tbl_dem_tipo_clientes on seq_idtipocliente = int_tipocliente
+ left join   public.tbl_dem_consejos_comunales on  tbl_dem_comite_mecanizacion.int_idconsejo = tbl_dem_consejos_comunales.seq_idconsejo
+ left join public.tbl_dem_tipo_consejos on tbl_dem_consejos_comunales.int_tipoconsejo = tbl_dem_tipo_consejos.seq_idtipcon
+ left join  tbl_dem_voceros_comite  on public.tbl_dem_voceros_comite.int_idcomite =tbl_dem_comite_mecanizacion.seq_idcomite
+left join public.tbl_dem_clientes as voceroprin  on public.tbl_dem_voceros_comite.int_idclientepv =voceroprin.seq_idcliente
+left join  public.tbl_dem_clientes as vocerosec on public.tbl_dem_voceros_comite.int_idclientesv =vocerosec.seq_idcliente
+join administracion.tbl_dem_documentofiscal on tbl_dem_clientes.seq_idcliente =tbl_dem_documentofiscal.int_idpagador
+
+
+group by
+
+tbl_dem_clientes.str_nombre,
+  tbl_dem_clientes.str_cedurif,
+  tbl_dem_clientes.str_email,
+  tbl_dem_tipo_clientes.str_descripcion,
+tbl_dem_comite_mecanizacion.str_descripcion ,
+
+  tbl_dem_comite_mecanizacion.int_idconsejo,
+  tbl_dem_tipo_consejos.str_descripcion ,
+  tbl_dem_consejos_comunales.str_descripcion ,
+
+voceroprin.str_nombre,
+vocerosec.str_nombre
+order by tbl_dem_comite_mecanizacion.str_descripcion]]>
+	</queryString>
+	<field name="str_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_cedurif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="str_email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipocliente" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreconsejomecanisado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="int_idconsejo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoconsejo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consejocomunal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voceroprin" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vocerosec" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldodeudor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="saldoacobrar" class="java.lang.Double" resetType="Group" resetGroup="comite" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldodeudor}>(0) ?  $F{saldodeudor} :0]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="saldoapagar" class="java.lang.Double" resetType="Group" resetGroup="comite" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldodeudor}<(0) ?  Math.abs($F{saldodeudor}) :0]]></variableExpression>
+		<initialValueExpression><![CDATA[0
+]]></initialValueExpression>
+	</variable>
+	<group name="comite" isStartNewPage="true" isReprintHeaderOnEachPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{nombreconsejomecanisado}]]></groupExpression>
+		<groupHeader>
+			<band height="119">
+				<staticText>
+					<reportElement x="199" y="90" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="24" y="43" width="123" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tipoconsejo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="147" y="43" width="200" height="20"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{consejocomunal}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="362" y="91" width="76" height="20"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[saldo a pagar
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="113" y="91" width="73" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CI/RIF]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="25" y="20" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Comite:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="130" y="20" width="358" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreconsejomecanisado}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="147" y="66" width="229" height="24"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Integrantes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="25" y="90" width="72" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="10" y="8" width="550" height="6"/>
+				</rectangle>
+				<line>
+					<reportElement x="10" y="110" width="550" height="1"/>
+					<graphicElement>
+						<pen lineWidth="2.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="475" y="91" width="85" height="20"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[saldo a cobrar]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="112">
+				<textField isBlankWhenNull="true">
+					<reportElement x="267" y="10" width="243" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{voceroprin}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="140" y="10" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Primer vocero]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="140" y="30" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Segundo vocero]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="10" y="99" width="550" height="6"/>
+				</rectangle>
+				<textField isBlankWhenNull="true">
+					<reportElement x="267" y="30" width="243" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{vocerosec}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="267" y="56" width="243" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldoacobrar}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="70" y="56" width="170" height="16"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Saldo Total a Cobrar Por Comite]]></text>
+				</staticText>
+				<line>
+					<reportElement x="10" y="9" width="550" height="1"/>
+					<graphicElement>
+						<pen lineWidth="2.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="69" y="72" width="171" height="16"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Saldo Total A Pagar Por Comite]]></text>
+				</staticText>
+				<textField pattern="#,##0.00">
+					<reportElement x="267" y="72" width="243" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldoapagar}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="129" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="91" width="550" height="6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="10" y="97" width="488" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Saldo Por Comite"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="10" y="117" width="550" height="6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="213" y="35" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIF: G-2007910-0]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="460" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="97" y="55" width="413" height="32"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<text><![CDATA[Direcciòn Fiscal: Av. Libertador entre calles 38 y 39 Edif. CVA piso PB Ofic. Central Zona Industrial 1 Barquisimeto Estado Lara Telef: (0251)237.40.26]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="15" width="378" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CVA CIA MECANIZADO AGRICOLA Y TRANSPORTE PEDRO CAMEJO SA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="199" y="0" width="136" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="0" width="73" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{str_cedurif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="0" width="72" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipocliente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="338" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{saldodeudor}<(0) ?  Math.abs($F{saldodeudor}) :0.00]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="460" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{saldodeudor}>(0) ?  $F{saldodeudor} :0.00]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

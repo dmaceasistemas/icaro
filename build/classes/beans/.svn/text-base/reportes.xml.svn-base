@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="rpt_cierrecaja" class="reportes.definicion.demeter.RepCierreCaja">
+  </bean>
+    
+ <bean id="rpt_clientecomite" class="reportes.definicion.demeter.RepClienteComite">
+  </bean>
+
+  <bean id="rpt_recibo" class="reportes.definicion.demeter.RepRecibo">
+  </bean> 
+  
+ <bean id="rpt_clientecomitesaldo" class="reportes.definicion.demeter.RepClienteComiteSaldo">
+  </bean> 
+  
+  <bean id="rpt_factura" class="reportes.definicion.demeter.RepFactura">
+  </bean>
+   
+  <bean id="rpt_facturawin" class="reportes.definicion.demeter.RepFactura">
+  </bean> 
+  
+  <bean id="rpt_facturasdiarias" class="reportes.definicion.demeter.RepFacturasDiarias">
+  </bean> 
+  
+  <bean id="rpt_saldofacturas" class="reportes.definicion.demeter.RepSaldoFacturas">
+  </bean> 
+  
+   <bean id="rpt_productoresplanemergente" class="reportes.definicion.demeter.RepProductoresPlanEmergente">
+  </bean> 
+  
+   <bean id="rpt_serviciosaprestar" class="reportes.definicion.demeter.RepServiciosAPrestar">
+  </bean> 
+  
+  <bean id="rpt_librodeventas" class="reportes.definicion.demeter.RepLibroDeVentas3">
+  </bean> 
+   
+   <bean id="rpt_notacredito" class="reportes.definicion.demeter.RepNotaCredito">
+  </bean> 
+   
+    <bean id="rpt_notadebito" class="reportes.definicion.demeter.RepNotaDebito">
+  </bean> 
+  
+  <bean id="rpt_cuentasporcobrar" class="reportes.definicion.demeter.RepCuentasPorCobrar">
+  </bean>  
+  
+   <bean id="rpt_serviciosaprestarsede" class="reportes.definicion.demeter.RepServiciosAPrestarSede">
+  </bean> 
+  
+  <bean id="rpt_servicioscontratomecanizadofinal" class="reportes.definicion.demeter.RepContrato2">
+  </bean>
+  
+  
+  
+  <bean id= "rpt_contratoserviciomecanizadogravado_carta" class="reportes.definicion.demeter.RepContrato2">
+  </bean>  
+  
+  <bean id="rpt_contratoserviciomecanizadoexonerado_carta" class="reportes.definicion.demeter.RepContrato2">
+  </bean>
+  
+  <bean id="rpt_contratoserviciomecanizadocredito_carta" class="reportes.definicion.demeter.RepContrato2">
+  </bean> 
+  
+  <bean id="farmacias" class="reportes.definicion.apolo.ListFarmacias">
+  </bean>
+  
+  <bean id="medico" class="reportes.definicion.apolo.ListMedico">
+  </bean>
+  
+  <bean id="partidasporsede" class="reportes.definicion.apolo.ListPartidasporSede">
+  </bean>
+  
+  <bean id="cartaavalmensual" class="reportes.definicion.apolo.RepCartaAvalMensual">
+  </bean>
+  
+  <bean id="cartasavalesporsedes" class="reportes.definicion.apolo.RepCartaAvalPorSede">
+  </bean>
+  
+  <bean id="examenesmedicosprocesados" class="reportes.definicion.apolo.RepExamenesMedicosProcesados">
+  </bean>
+  
+  <bean id="gastosybeneficiadospormes" class="reportes.definicion.apolo.RepGastosBeneficiadosPorMes">
+  </bean>
+  
+  <bean id="emergenciamedica" class="reportes.definicion.apolo.RepEmergenciaMedica">
+  </bean>
+  
+  <bean id="reembolsos" class="reportes.definicion.apolo.RepReembolsos">
+  </bean>
+  
+  <bean id="citas" class="reportes.definicion.apolo.RepCitas">
+  </bean>
+    
+  <bean id="tratamientopermanente" class="reportes.definicion.apolo.RepTratamientoPermanente">
+  </bean>
+  
+  <bean id="consolidado" class="reportes.definicion.apolo.RepConsolidado">
+  </bean>
+  
+   <bean id="coberturas_descontadas" class="reportes.definicion.apolo.RepCoberturasDescontadas">
+  </bean>
+  
+  <bean id="ORDENFARMACIA2" class="reportes.definicion.apolo.RepTratamientoPermanente2">
+  </bean>
+  
+  <bean id="ORDENCONSULTA2" class="reportes.definicion.apolo.RepCitas2">
+  </bean>
+  
+  <bean id="INFORMEEMERGENCIA" class="reportes.definicion.apolo.RepEmergenciaMedica2">
+  </bean>
+  
+   <bean id="Empleados" class="reportes.definicion.apolo.RepEmpleados">
+  </bean>
+  
+  <bean id="SOLICITUDPAGOMEDICOSEMPLEADOS" class="reportes.definicion.apolo.SolicitudPagoMedicosEmpleados">
+  </bean> 
+				 		 
+		 <bean id="SOLICITUDPAGOMEDICOSOBREROS" class="reportes.definicion.apolo.SolicitudPagoMedicosObreros">
+		 </bean>  
+		 
+		 <bean id="SOLICITUDPAGOSEDEMEDICAEMPLEADOS" class="reportes.definicion.apolo.SolicitudPagoSedeMedicaEmpleados">
+		 </bean>  
+		 
+		  <bean id="SOLICITUDPAGOSEDEMEDICAOBREROS" class="reportes.definicion.apolo.SolicitudPagoSedeMedicaObreros">
+		 </bean>
+		 
+		 <bean id="SOLICITUDPAGOREEMBOLSOEMPLEADOS" class="reportes.definicion.apolo.SolicitudPagoReembolsoEmpleados">
+		 </bean>
+		 
+		 <bean id="SOLICITUDPAGOREEMBOLSOOBREROS" class="reportes.definicion.apolo.SolicitudPagoReembolsoObreros">
+		 </bean>    
+		    
+		 <bean id="baremo" class="reportes.definicion.apolo.ListBaremo">
+		 </bean> 
+		       
+		 <bean id="solicitudCotizacion" class="reportes.definicion.sigesp.RepSolicitudCotizacion">
+		 </bean>	 
+		   
+		 <bean id="disponibilidad" class="reportes.definicion.sigesp.RepDisponibilidad">
+		 </bean>
+  
+		 <bean id="reportxparams" class="reportes.definicion.seguimiento.Reportxparams">
+		 </bean>
+		 
+		 <bean id="reportxparams2" class="reportes.definicion.seguimiento.Reportxparams2">
+		 </bean>
+		 
+		 <bean id="reportxparams3" class="reportes.definicion.seguimiento.Reportxparams3">
+		 </bean>
+		 
+		 <bean id="reportxparams4" class="reportes.definicion.seguimiento.Reportxparams4">
+		 </bean>
+		 
+		  <bean id="reportxparams5" class="reportes.definicion.seguimiento.Reportxparams5">
+		 </bean>
+		 
+		  <bean id="reportxparams6" class="reportes.definicion.seguimiento.Reportxparams6">
+		 </bean>
+		 
+		 <bean id="reportxparams7" class="reportes.definicion.seguimiento.Reportxparams7">
+		 </bean>
+
+		  <bean id="reportxparams8" class="reportes.definicion.seguimiento.Reportxparams8">
+		 </bean>
+		 
+		 <bean id="prodMensual2" class="reportes.definicion.seguimiento.prodMensual2">
+		 </bean>
+		
+		 <bean id="graphic_report" class="reportes.definicion.seguimiento.graphic_report">
+		 </bean>
+		 
+		 <bean id="graphicReportx2" class="reportes.definicion.seguimiento.graphicReportx2">
+		 </bean>
+		 
+		 <bean id="graphicReportx3" class="reportes.definicion.seguimiento.graphicReportx3">
+		 </bean>
+		 
+		 <bean id="graphicReportx4" class="reportes.definicion.seguimiento.graphicReportx4">
+		 </bean>
+		 
+		 <bean id="graphicReportx5" class="reportes.definicion.seguimiento.graphicReportx5">
+		 </bean>	
+		 
+		 <bean id="graphicReportx6" class="reportes.definicion.seguimiento.graphicReportx6">
+		 </bean>
+		 		 
+		 <bean id="graphicReportx7" class="reportes.definicion.seguimiento.graphicReportx7">
+		 </bean>		 		 
+		 
+		 <bean id="graphicReportx8" class="reportes.definicion.seguimiento.graphicReportx8">
+		 </bean>
+		 
+		 <bean id="graphicReportx9" class="reportes.definicion.seguimiento.graphicReportx9">
+		 </bean>		
+		 
+		 <bean id="graphicReportx10" class="reportes.definicion.seguimiento.graphicReportx10">
+
+		 </bean>		
+		   		 
+		 <bean id="intranet_constancia" class="reportes.definicion.intranet.intranet_constancia">
+		 </bean>		   		 
+
+		
+		 
+		 <bean id="reporteConsolidado" class="reportes.definicion.seguimiento.ReporteConsolidado">
+		 </bean>
+		 
+		 <bean id="reporteConsolidado2" class="reportes.definicion.seguimiento.ReporteConsolidado2">
+		 </bean>
+		 	 
+
+		 
+		 <bean id="rpt_registrotransito" class="reportes.definicion.sigesp.imp.RepRegistroTransito">
+		 </bean>
+		 
+		 <bean id="rpt_registrorecepcion" class="reportes.definicion.sigesp.imp.RepRegistroRecepcion">
+		 </bean>
+		 
+		 <bean id="rpt_registronacionalizacion" class="reportes.definicion.sigesp.imp.RepRegistroNacionalizacion">
+		 </bean>
+		 
+		 <bean id="rpt_registrodespacho" class="reportes.definicion.sigesp.imp.RepRegistroDespacho">
+		 </bean>
+		 
+		 <bean id="rpt_registrodespachoarticulos" class="reportes.definicion.sigesp.imp.RepRegistroDespachoArticulos">
+		 </bean>
+		 
+		 <bean id="imprimir_corresp_interna" class="reportes.definicion.wara.RepImpCorrespInterna">
+		 </bean>
+		 
+		 <bean id="imprimir_corresp_externa" class="reportes.definicion.wara.RepImpCorrespExterna">
+		 </bean>
+		 
+		 <bean id="imprimir_memo_rapido" class="reportes.definicion.wara.RepImpMemoRapido">
+		 </bean>		 
+		 
+		 <bean id="traspasos" class="reportes.definicion.sigesp.RepTraspasos">
+		 </bean>
+		 
+		 <bean id="traspasos_excel" class="reportes.definicion.sigesp.RepTraspasosExcel">
+		 </bean> 
+
+		 <bean id="cierreViaticos" class="reportes.definicion.sigesp.RepCierreViaticos">
+		 </bean>
+		
+		<bean id="gasto_viaticos" class="reportes.definicion.sigesp.RepGastoViaticos">
+		 </bean> 
+		 
+		 <bean id="gasto_reembolsos" class="reportes.definicion.sigesp.RepGastoReembolsos">
+		 </bean> 
+		 
+		 <bean id="gastoViaticoPersonal" class="reportes.definicion.sigesp.RepGastoViaticoPersonal">
+		 </bean> 
+		 
+		 <bean id="OrdenCompraPartida" class="reportes.definicion.sigesp.RepOrdenCompraPartida">
+		 </bean> 
+		 
+		 <bean id="rpt_devolucion" class="reportes.definicion.sigesp.RepDevolucion">
+		 </bean> 
+</beans>

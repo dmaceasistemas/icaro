@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ORDENCONSULTA2"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="encabezado" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="logoCVA" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="logoCPC" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="pie" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="nroOrden" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT ben.codigo_beneficiario as codben_ben, ben.nombre as nombre_ben, ben.parentesco, ben.cedula_empleado, ben.sexo as sexo_ben,
+	emp.cedula_empleado as cedula_emp, emp.nombre as nombre_emp, emp.condicion, emp.sexo as sexo_emp,
+	vint.telhabper as telhabemp_sigesp, vint.telmovper as tefmovemp_sigesp,
+	emergencia.id, emergencia.codigo,
+	sedmed.nombre as nombre_sedeMed, sedmed.estado as estado_sedeM, sedmed.direccion,
+	ser.codigo_servicio, ser.nombre as nombre_ser,
+	dop.codigo_servicio, dop.numero_servicio, dop.numero_orden, dop.diagnostico,
+	op.numero_orden, op.codigo_medico,
+	cob.numero_cobertura, cob.cedula_empleado as cedemp_cob, cob.codigo_beneficiario as codben_cob,
+	med.codigo_medico, med.nombre as nombre_med, med.especialidad,
+	sede.codigo_sede, sede.nombre as nombre_sede,
+        esp.codigo_especialidad, esp.nombre as nombre_especialidad,
+	CASE ben.parentesco
+	  WHEN 'P' THEN 'Padre'
+	  WHEN 'M' THEN 'Madre'
+	  WHEN 'C' THEN 'Conyugue'
+	  WHEN 'H' THEN CASE ben.sexo
+			  WHEN 'F' THEN 'Hija'
+			  ELSE 'Hijo'
+			END
+	END AS parentesco_texto,
+	CASE emp.condicion
+	  WHEN 'E' THEN 'Empleado'
+	  ELSE 'Obrero'
+	END AS condicion_texto,
+	CASE emp.sexo
+	  WHEN 'F' THEN 'Femenino'
+	  ELSE 'Masculino'
+	END AS emp_sexo_texto,
+	CASE ben.sexo
+	  WHEN 'F' THEN 'Femenino'
+	  ELSE 'Masculino'
+	END AS ben_sexo_texto
+	FROM tbl_sas_cobertura cob
+	JOIN tbl_sas_ordenpago op USING (numero_cobertura)
+	JOIN tbl_sas_detalle_ordenpago dop ON dop.numero_orden = op.numero_orden
+	JOIN tbl_sas_servicio ser ON dop.codigo_servicio = ser.codigo_servicio
+	JOIN tbl_sas_servicio_emergenciamedica emergencia ON dop.numero_servicio = emergencia.id
+	LEFT JOIN tbl_sas_beneficiario ben USING (codigo_beneficiario)
+	JOIN tbl_sas_empleado emp ON cob.cedula_empleado = emp.cedula_empleado
+	LEFT JOIN tbl_sas_medico med ON op.codigo_medico = med.codigo_medico
+	LEFT JOIN tbl_sas_sedemedica sedmed ON op.codigo_sede_medica = sedmed.codigo_sede_medica
+	JOIN tbl_sas_sede sede ON emp.codigo_sede = sede.codigo_sede
+	JOIN viw_apolo_sigesp_personal vint ON vint.cedper = cob.cedula_empleado
+        LEFT JOIN tbl_sas_especialidad esp ON med.especialidad = esp.codigo_especialidad::character
+	WHERE ser.nombre = 'EMERGENCIA MEDICA'
+		AND emergencia.id = $P{nroOrden}::integer]]></queryString>
+
+	<field name="codben_ben" class="java.lang.String"/>
+	<field name="nombre_ben" class="java.lang.String"/>
+	<field name="parentesco" class="java.lang.String"/>
+	<field name="cedula_empleado" class="java.lang.String"/>
+	<field name="sexo_ben" class="java.lang.String"/>
+	<field name="cedula_emp" class="java.lang.String"/>
+	<field name="nombre_emp" class="java.lang.String"/>
+	<field name="condicion" class="java.lang.String"/>
+	<field name="sexo_emp" class="java.lang.String"/>
+	<field name="telhabemp_sigesp" class="java.lang.String"/>
+	<field name="tefmovemp_sigesp" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="nombre_sedemed" class="java.lang.String"/>
+	<field name="estado_sedem" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="codigo_servicio" class="java.lang.Integer"/>
+	<field name="nombre_ser" class="java.lang.String"/>
+	<field name="numero_servicio" class="java.lang.Integer"/>
+	<field name="numero_orden" class="java.lang.Integer"/>
+	<field name="diagnostico" class="java.lang.String"/>
+	<field name="codigo_medico" class="java.lang.Integer"/>
+	<field name="numero_cobertura" class="java.lang.Integer"/>
+	<field name="cedemp_cob" class="java.lang.String"/>
+	<field name="codben_cob" class="java.lang.String"/>
+	<field name="nombre_med" class="java.lang.String"/>
+	<field name="especialidad" class="java.lang.String"/>
+	<field name="codigo_sede" class="java.lang.Integer"/>
+	<field name="nombre_sede" class="java.lang.String"/>
+	<field name="codigo_especialidad" class="java.lang.Integer"/>
+	<field name="nombre_especialidad" class="java.lang.String"/>
+	<field name="parentesco_texto" class="java.lang.String"/>
+	<field name="condicion_texto" class="java.lang.String"/>
+	<field name="emp_sexo_texto" class="java.lang.String"/>
+	<field name="ben_sexo_texto" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="52"  isSplitAllowed="true" >
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="2"
+						width="535"
+						height="50"
+						key="image-1"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{encabezado}]]></imageExpression>
+				</image>
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="508"
+						y="0"
+						width="26"
+						height="33"
+						key="image-2"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logoCPC}]]></imageExpression>
+				</image>
+				<image  scaleImage="FillFrame" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="478"
+						y="2"
+						width="30"
+						height="33"
+						key="image-3"
+						isRemoveLineWhenBlank="true"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logoCVA}]]></imageExpression>
+				</image>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="197"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="2"
+						width="120"
+						height="9"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Corporación Venezolana Agraria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="45"
+						width="45"
+						height="12"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[N° Orden:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="1"
+						y="62"
+						width="113"
+						height="11"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[DATOS DEL TRABAJADOR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="102"
+						width="120"
+						height="11"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[DATOS DEL BENEFICIARIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="73"
+						width="113"
+						height="11"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Apellido(s) y Nombre(s):]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="113"
+						width="113"
+						height="11"
+						key="staticText-8"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Apellido(s) y Nombre(s):]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="58"
+						width="535"
+						height="1"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="100"
+						width="535"
+						height="1"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="176"
+						y="72"
+						width="91"
+						height="12"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Cédula de Identidad:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="176"
+						y="113"
+						width="91"
+						height="11"
+						key="staticText-10"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Cédula de Identidad:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="84"
+						width="173"
+						height="13"
+						key="textField-2"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre_emp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="124"
+						width="173"
+						height="13"
+						key="textField-3"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_ben} == null) ? $F{nombre_emp} : $F{nombre_ben}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="84"
+						width="91"
+						height="13"
+						key="textField-4"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cedula_emp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="123"
+						width="91"
+						height="13"
+						key="textField-5"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{codben_ben} == null) ? $F{cedula_emp} : $F{codben_ben}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="252"
+						y="45"
+						width="38"
+						height="12"
+						key="staticText-11"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="290"
+						y="45"
+						width="75"
+						height="11"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="127"
+						y="22"
+						width="281"
+						height="13"
+						key="staticText-13"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font isBold="false"/>
+					</textElement>
+				<text><![CDATA[Sistema Autogestionado de Salud]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="270"
+						y="73"
+						width="31"
+						height="12"
+						key="staticText-14"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Ext. Tlf:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="461"
+						y="60"
+						width="72"
+						height="12"
+						key="staticText-15"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Tipo de Nómina:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="270"
+						y="113"
+						width="91"
+						height="11"
+						key="staticText-16"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Parentesco:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="140"
+						width="535"
+						height="1"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="1"
+						y="142"
+						width="124"
+						height="12"
+						key="staticText-17"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Clínica o Centro Hospitalario:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="176"
+						y="142"
+						width="91"
+						height="12"
+						key="staticText-18"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Estado:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="154"
+						width="173"
+						height="13"
+						key="textField-8"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_sedemed} == null) ? "NO APLICA" : $F{nombre_sedemed}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="154"
+						width="91"
+						height="13"
+						key="textField-9"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{estado_sedem} == null) ? "NO APLICA" : $F{estado_sedem}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="1"
+						y="170"
+						width="124"
+						height="12"
+						key="staticText-19"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Médico Tratante:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="169"
+						width="535"
+						height="1"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="176"
+						y="170"
+						width="124"
+						height="12"
+						key="staticText-20"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Especialidad:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="173"
+						y="58"
+						width="1"
+						height="111"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="269"
+						y="58"
+						width="1"
+						height="111"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="374"
+						y="58"
+						width="1"
+						height="42"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="194"
+						width="535"
+						height="1"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="182"
+						width="173"
+						height="13"
+						key="textField-10"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_med} == null) ? "" : $F{nombre_med}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="270"
+						y="123"
+						width="91"
+						height="13"
+						key="textField-12"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{parentesco_texto} == null) ? "TITULAR" : $F{parentesco_texto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="72"
+						width="72"
+						height="13"
+						key="textField-13"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{condicion_texto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="45"
+						y="45"
+						width="101"
+						height="13"
+						key="textField-20"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="459"
+						y="58"
+						width="1"
+						height="42"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="376"
+						y="72"
+						width="72"
+						height="12"
+						key="staticText-32"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Sede:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="376"
+						y="84"
+						width="80"
+						height="13"
+						key="textField-21"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre_sede}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="461"
+						y="86"
+						width="23"
+						height="12"
+						key="staticText-33"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Sexo:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="483"
+						y="86"
+						width="50"
+						height="13"
+						key="textField-22"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{emp_sexo_texto}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="459"
+						y="84"
+						width="76"
+						height="1"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="459"
+						y="99"
+						width="1"
+						height="42"
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="461"
+						y="113"
+						width="30"
+						height="12"
+						key="staticText-34"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Sexo:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="124"
+						width="54"
+						height="13"
+						key="textField-23"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{sexo_ben} == null) ? "NO APLICA" : $F{ben_sexo_texto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="127"
+						y="2"
+						width="281"
+						height="21"
+						key="staticText-39"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Informe de Emergencia]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="303"
+						y="86"
+						width="72"
+						height="12"
+						key="textField-24"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{tefmovemp_sigesp} == null) ? "" : $F{tefmovemp_sigesp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="303"
+						y="72"
+						width="72"
+						height="12"
+						key="textField-25"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{telhabemp_sigesp} == null) ? "" : $F{telhabemp_sigesp}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="270"
+						y="142"
+						width="45"
+						height="12"
+						key="staticText-40"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Dirección:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="315"
+						y="142"
+						width="218"
+						height="25"
+						key="textField-26"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{direccion} == null) ? "" : $F{direccion}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="173"
+						y="170"
+						width="1"
+						height="24"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="182"
+						width="189"
+						height="13"
+						key="textField-27"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{nombre_especialidad} == null) ? "" : $F{nombre_med}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="448"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="2"
+						y="5"
+						width="89"
+						height="11"
+						key="staticText-21"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Motivo de Consulta:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="75"
+						width="535"
+						height="1"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="77"
+						width="89"
+						height="12"
+						key="staticText-22"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Diagnóstico:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="90"
+						width="530"
+						height="43"
+						key="textField-14"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{diagnostico}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="146"
+						width="535"
+						height="1"
+						key="line-10"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="153"
+						width="80"
+						height="12"
+						key="staticText-35"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Informe Médico:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="220"
+						width="535"
+						height="1"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="82"
+						y="15"
+						width="453"
+						height="1"
+						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="30"
+						width="535"
+						height="1"
+						key="line-49"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="45"
+						width="535"
+						height="1"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="205"
+						width="535"
+						height="1"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="82"
+						y="160"
+						width="453"
+						height="1"
+						key="line-52"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="175"
+						width="535"
+						height="1"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="190"
+						width="535"
+						height="1"
+						key="line-54"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="235"
+						width="535"
+						height="1"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="265"
+						width="535"
+						height="1"
+						key="line-54"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="295"
+						width="535"
+						height="1"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="280"
+						width="535"
+						height="1"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="310"
+						width="535"
+						height="1"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="250"
+						width="535"
+						height="1"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="60"
+						width="535"
+						height="1"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="325"
+						width="535"
+						height="1"
+						key="line-55"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="340"
+						width="535"
+						height="1"
+						key="line-56"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="355"
+						width="535"
+						height="1"
+						key="line-57"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="370"
+						width="535"
+						height="1"
+						key="line-58"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="385"
+						width="535"
+						height="1"
+						key="line-59"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="400"
+						width="535"
+						height="1"
+						key="line-60"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="415"
+						width="535"
+						height="1"
+						key="line-61"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="430"
+						width="535"
+						height="1"
+						key="line-62"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="445"
+						width="535"
+						height="1"
+						key="line-63"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="100"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="16"
+						width="535"
+						height="1"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="68"
+						width="535"
+						height="1"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="3"
+						y="18"
+						width="135"
+						height="12"
+						key="staticText-29"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Médico Tratante Sello y Firma:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="180"
+						y="17"
+						width="1"
+						height="51"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="181"
+						y="18"
+						width="135"
+						height="12"
+						key="staticText-30"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Firma del Paciente:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="361"
+						y="18"
+						width="167"
+						height="12"
+						key="staticText-31"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Autorizado por Sist. Autog. de Salud]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="359"
+						y="17"
+						width="1"
+						height="51"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="77"
+						width="532"
+						height="23"
+						key="image-4"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{pie}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="3"
+						y="1"
+						width="532"
+						height="12"
+						key="staticText-36"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Nota: Cualquier Estudio o Procedimiento practicados en Consulta Médica favor anexar soportes en original o copia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="56"
+						width="38"
+						height="12"
+						key="staticText-37"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="361"
+						y="56"
+						width="57"
+						height="12"
+						key="staticText-38"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Firma y Sello]]></text>
+				</staticText>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
